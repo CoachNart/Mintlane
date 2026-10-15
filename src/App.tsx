@@ -86,7 +86,7 @@ function App(){
     setClaiming(true);setClaimMessage("");
     try{
       const { claimCreatorRewards } = await import("@metaplex-foundation/genesis");
-      const umi=createUmiForWallet();
+      const umi=await createUmiForWallet();
       const result=await claimCreatorRewards(umi,{}, {wallet:publicKey.toBase58(),network:"solana-devnet"});
       let claimed=0;
       for(const tx of result.transactions){
