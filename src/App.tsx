@@ -50,7 +50,7 @@ function App(){
   const tokens=useMemo(()=>demoTokens.filter(t=>(t.name+" "+t.ticker).toLowerCase().includes(search.toLowerCase())),[search]);
   const go=(p:Page)=>{setPage(p);setMobileNav(false);window.scrollTo({top:0,behavior:"smooth"})};
   const copy=(text:string)=>{navigator.clipboard?.writeText(text);setNotice("Copied to clipboard")};
-  const createUmiForWallet=()=>createUmi(import.meta.env.VITE_SOLANA_RPC_URL||"https://api.devnet.solana.com").use(walletAdapterIdentity(wallet));
+  const createUmiForWallet=()=>createUmi("https://api.devnet.solana.com").use(walletAdapterIdentity(wallet));
   const launchToken=async()=>{
     if(!connected||!publicKey){setLaunchError("Connect your Phantom or Solflare wallet first.");return}
     if(!draft.name?.trim()||draft.name.trim().length>32){setLaunchError("Token name must be between 1 and 32 characters.");return}
