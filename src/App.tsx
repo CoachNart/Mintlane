@@ -27,7 +27,7 @@ const CA_ADDRESS = ""; // Set the token contract address here when it is availab
 function moneyAddress(s:string){return s.length>12?s.slice(0,5)+"…"+s.slice(-5):s}
 function readDraft(){try{return JSON.parse(localStorage.getItem("mintlane-launch-draft")||"{}")}catch{return {}}}
 function App(){
-  const [page,setPage]=useState<Page>("Overview");
+  const [page,setPage]=useState<Page>(()=>new URLSearchParams(window.location.search).get("page")==="launch"?"Launch token":"Overview");
   const [mobileNav,setMobileNav]=useState(false);
   const [search,setSearch]=useState("");
   const [filter,setFilter]=useState("Trending");
