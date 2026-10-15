@@ -6,7 +6,7 @@ import {
   Search, Settings2, ShieldCheck, Sparkles, TrendingUp, Wallet, X, Zap
 } from "lucide-react";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { createAndRegisterLaunch, claimCreatorRewards } from "@metaplex-foundation/genesis/api";
+import { createAndRegisterLaunch, claimCreatorRewards } from "@metaplex-foundation/genesis";
 import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
 import { walletAdapterIdentity } from "@metaplex-foundation/umi-signer-wallet-adapters";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
