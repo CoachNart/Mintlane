@@ -404,6 +404,43 @@
   @keyframes caret { 50% { opacity: 0; } }
   @keyframes pvPulse { 0% { box-shadow: 0 0 0 0 rgba(125,233,193,.55); } 100% { box-shadow: 0 0 0 16px rgba(125,233,193,0); } }
 
+
+  /* ---------- Floating glass navigation ---------- */
+  .site-header { position: sticky; top: 12px; z-index: 1000; width: min(calc(100% - 32px), var(--wrap)); margin: 12px auto -76px; }
+  .nav-shell { min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 9px 12px 9px 18px; border: 1px solid rgba(209,219,226,.19); border-radius: 18px; background: rgba(8,12,15,.62); -webkit-backdrop-filter: blur(24px) saturate(155%); backdrop-filter: blur(24px) saturate(155%); box-shadow: 0 12px 36px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.045); }
+  .nav-brand { display: inline-flex; align-items: center; gap: 10px; flex: none; font-family: var(--display); font-size: 15px; font-weight: 500; letter-spacing: -.025em; }
+  .nav-brand svg { width: 29px; height: 29px; filter: drop-shadow(0 0 12px rgba(209,219,226,.16)); }
+  .nav-right { display: flex; align-items: center; justify-content: flex-end; gap: clamp(12px, 2.2vw, 28px); min-width: 0; }
+  .nav-links { display: flex; align-items: center; gap: clamp(12px, 2vw, 25px); }
+  .nav-link { position: relative; color: #AAB5BC; font-size: 12.5px; font-weight: 600; white-space: nowrap; transition: color .2s ease; }
+  .nav-link::after { content: ""; position: absolute; left: 0; right: 0; bottom: -7px; height: 1px; background: var(--metal); transform: scaleX(0); transform-origin: right; transition: transform .3s cubic-bezier(.2,.7,.2,1); }
+  .nav-link:hover, .nav-link:focus-visible { color: #fff; }
+  .nav-link:hover::after, .nav-link:focus-visible::after { transform: scaleX(1); transform-origin: left; }
+  .nav-actions { display: flex; align-items: center; gap: 10px; }
+  .nav-x { display: grid; place-items: center; width: 38px; height: 38px; flex: none; color: #D1DBE2; border: 1px solid rgba(209,219,226,.17); border-radius: 12px; background: rgba(209,219,226,.035); transition: color .2s, background .2s, border-color .2s, transform .2s; }
+  .nav-x svg { width: 16px; height: 16px; }
+  .nav-x:hover { color: #fff; background: rgba(209,219,226,.11); border-color: rgba(209,219,226,.4); transform: translateY(-1px); }
+  .nav-launch { height: 38px; padding: 0 16px; border-radius: 11px; font-size: 12.5px; }
+  @media (max-width: 680px) {
+    .site-header { width: calc(100% - 20px); top: 8px; margin-top: 8px; margin-bottom: -70px; }
+    .nav-shell { min-height: 58px; padding: 8px 9px 8px 12px; gap: 10px; border-radius: 15px; }
+    .nav-brand { gap: 7px; font-size: 13px; }
+    .nav-brand svg { width: 25px; height: 25px; }
+    .nav-right { gap: 10px; }
+    .nav-links { gap: 12px; }
+    .nav-link { font-size: 11px; }
+    .nav-x { width: 34px; height: 34px; border-radius: 10px; }
+    .nav-launch { height: 34px; padding: 0 11px; font-size: 11px; }
+  }
+  @media (max-width: 420px) {
+    .nav-links { gap: 10px; }
+    .nav-link[data-nav="creators"] { display: none; }
+    .nav-link { font-size: 10.5px; }
+    .nav-right { gap: 8px; }
+    .nav-actions { gap: 6px; }
+    .nav-launch { padding: 0 9px; }
+  }
+
   /* ---------- Responsive ---------- */
   @media (max-width: 960px) {
     .hero { padding-top: 80px; }
@@ -479,6 +516,28 @@
     </symbol>
   </defs>
 </svg>
+
+<header class="site-header" aria-label="Main navigation">
+  <div class="nav-shell">
+    <a class="nav-brand" href="#top" aria-label="Mintlane home">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><use href="#mark"></use></svg>
+      <span>Mintlane</span>
+    </a>
+    <div class="nav-right">
+      <nav class="nav-links" aria-label="Primary">
+        <a class="nav-link" href="#how">How it works</a>
+        <a class="nav-link" data-nav="creators" href="#creators">For creators</a>
+        <a class="nav-link" href="#faq">FAQ</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="nav-x" href="#" data-x-placeholder aria-label="Mintlane on X — link coming soon" title="X link coming soon">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.9 2H22l-6.78 7.75L23.2 22h-6.25l-4.9-7.55L5.45 22H2.3l7.25-8.29L1.8 2h6.4l4.43 6.96L18.9 2Zm-1.1 17.9h1.73L7.27 4H5.41L17.8 19.9Z"/></svg>
+        </a>
+        <a class="launch nav-launch" data-launch href="/app.html?page=launch"><span class="lt">Launch Token</span><span class="li" aria-hidden="true"><svg class="u1" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 13V3M3.5 7.5L8 3l4.5 4.5"/></svg><svg class="u2" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 13V3M3.5 7.5L8 3l4.5 4.5"/></svg></span></a>
+      </div>
+    </div>
+  </div>
+</header>
 
 <main id="top">
 
@@ -756,6 +815,7 @@
   const TOKENS = [];
 
   document.querySelectorAll("[data-launch]").forEach(a => a.href = LAUNCH_URL);
+  document.querySelectorAll("[data-x-placeholder]").forEach(a => a.addEventListener("click", e => e.preventDefault()));
   document.getElementById("yr").textContent = new Date().getFullYear();
 
   /* ====== Hero: liquid-metal shader ====== */
