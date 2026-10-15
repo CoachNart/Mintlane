@@ -23,7 +23,8 @@ const navGroups = [
   {label:"WORKSPACE",items:[{name:"Overview" as Page,icon:Grid2X2},{name:"Explore" as Page,icon:Compass},{name:"Launch token" as Page,icon:Rocket}]},
   {label:"YOUR ACCOUNT",items:[{name:"Portfolio" as Page,icon:Layers3},{name:"Creator earnings" as Page,icon:Gem},{name:"Activity" as Page,icon:Activity}]}
 ];
-const CA_ADDRESS = ""; // Set the token contract address here when it is available.\nfunction moneyAddress(s:string){return s.length>12?s.slice(0,5)+"…"+s.slice(-5):s}
+const CA_ADDRESS = ""; // Set the token contract address here when it is available.
+function moneyAddress(s:string){return s.length>12?s.slice(0,5)+"…"+s.slice(-5):s}
 function readDraft(){try{return JSON.parse(localStorage.getItem("mintlane-launch-draft")||"{}")}catch{return {}}}
 function App(){
   const [page,setPage]=useState<Page>("Overview");
