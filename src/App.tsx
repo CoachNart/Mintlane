@@ -7,8 +7,6 @@ import {
 } from "lucide-react";
 import { useWallet } from "@solana/wallet-adapter-react";
 
-import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
-import { walletAdapterIdentity } from "@metaplex-foundation/umi-signer-wallet-adapters";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 
 type Page = "Overview" | "Explore" | "Launch token" | "Portfolio" | "Creator earnings" | "Activity" | "Settings";
@@ -50,7 +48,13 @@ function App(){
   const tokens=useMemo(()=>demoTokens.filter(t=>(t.name+" "+t.ticker).toLowerCase().includes(search.toLowerCase())),[search]);
   const go=(p:Page)=>{setPage(p);setMobileNav(false);window.scrollTo({top:0,behavior:"smooth"})};
   const copy=(text:string)=>{navigator.clipboard?.writeText(text);setNotice("Copied to clipboard")};
-  const createUmiForWallet=()=>createUmi("https://api.devnet.solana.com").use(walletAdapterIdentity(wallet));
+  const createUmiForWallet=async()=>{
+    const [{createUmi},{walletAdapterIdentity}]=await Promise.all([
+      import("@metaplex-foundation/umi-bundle-defaults"),
+      import("@metaplex-foundation/umi-signer-wallet-adapters")
+    ]);
+    return createUmi("https://api.devnet.solana.com").use(walletAdapterIdentity(wallet));
+  };
   const launchToken=async()=>{
     if(!connected||!publicKey){setLaunchError("Connect your Phantom or Solflare wallet first.");return}
     if(!draft.name?.trim()||draft.name.trim().length>32){setLaunchError("Token name must be between 1 and 32 characters.");return}
@@ -59,7 +63,7 @@ function App(){
     setLaunching(true);setLaunchError("");setLaunchResult(null);
     try{
       const { createAndRegisterLaunch } = await import("@metaplex-foundation/genesis");
-      const umi=createUmiForWallet();
+      const umi=await createUmiForWallet();
       const result=await createAndRegisterLaunch(umi,{},{
         wallet:publicKey.toBase58(),
         network:"solana-devnet",
