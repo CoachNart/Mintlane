@@ -146,3 +146,64 @@ body{background-image:radial-gradient(ellipse at 72% 8%,#374B4F30,transparent 38
 .ca-copy-button,.wallet-actions .ca-copy-button{border-color:#374B4F!important;background:#0D1416!important;color:#B6C6C6!important}
 .ca-copy-button:hover,.wallet-actions .ca-copy-button:hover{border-color:#586F72!important;background:#26393F!important;color:#FFFFFF!important}
 .wallet-actions .online-dot{background:#586F72;box-shadow:0 0 0 3px #586F7228}
+
+
+/* Mobile hero: keep the copy readable and place the launch preview below it. */
+@media(max-width:680px){
+  .hero-banner{
+    min-height:0;
+    display:flex;
+    flex-direction:column;
+    padding-bottom:17px;
+  }
+  .hero-grid{
+    mask-image:linear-gradient(180deg,#000 0%,#000 55%,transparent 100%);
+  }
+  .hero-copy{
+    width:100%;
+    padding:23px 19px 17px;
+  }
+  .hero-tag{
+    font-size:8px;
+    letter-spacing:.65px;
+    line-height:1.5;
+  }
+  .hero-copy h2{
+    max-width:100%;
+    font-size:clamp(21px,6.1vw,26px);
+    line-height:1.2;
+    letter-spacing:-.8px;
+    overflow-wrap:normal;
+    word-break:normal;
+  }
+  .hero-copy p{
+    max-width:290px;
+    font-size:11px;
+    line-height:1.55;
+    margin-bottom:15px;
+  }
+  .hero-copy .button{
+    align-self:flex-start;
+  }
+  .hero-art{
+    position:relative;
+    inset:auto;
+    width:100%;
+    height:auto;
+    padding:0 19px;
+    opacity:1;
+    justify-content:center;
+  }
+  .launch-preview{
+    width:100%;
+    max-width:390px;
+    padding:13px 13px 11px;
+    transform:none;
+  }
+  .preview-token-name b{font-size:10px}
+  .preview-token-name span,.preview-live,.chart-labels,.preview-footer{font-size:7px}
+  .preview-value{padding:12px 0 9px}
+  .preview-value>div b{font-size:13px}
+  .preview-chart{height:66px}
+  .preview-footer{gap:9px}
+}
