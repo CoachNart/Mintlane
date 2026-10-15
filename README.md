@@ -39,7 +39,7 @@ The wallet and launch flow default to Solana devnet. Connect Phantom or Solflare
 
 ## Environment
 
-- `VITE_SOLANA_RPC_URL`: optional Solana RPC endpoint. Defaults to public devnet.
+- Solana RPC is intentionally locked to public devnet in this build. Mainnet is not configurable from the frontend yet.
 - `VITE_MARKET_DATA_URL`: reserved for a future live market-data provider integration.
 
 Never put seed phrases, private keys, or server secrets in frontend environment variables.
