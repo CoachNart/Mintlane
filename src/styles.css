@@ -89,3 +89,60 @@ body{background:var(--bg-primary);color:var(--text-main)}
  .wallet-actions .wallet-connect,.wallet-actions .wallet-adapter-button,.wallet-actions .wallet-adapter-button-trigger{padding:0 11px!important;font-size:11px!important}
  .wallet-actions .ca-copy-button{padding:0 10px;font-size:10px}
 }
+
+
+/* Experimental deep mineral-teal brand palette. */
+:root{
+  --bg-primary:#0D1416;
+  --bg-vignette:#0A0F11;
+  --bg:#0D1416;
+  --panel:#26393F;
+  --panel2:#374B4F;
+  --line:#496163;
+  --muted:#A5B3B4;
+  --muted2:#819596;
+  --text:#F2F6F5;
+  --text-main:#F2F6F5;
+  --brand:#496163;
+  --brand-hover:#586F72;
+  --cyan:#586F72;
+  --gold:#586F72;
+  --bg-surface:#26393F;
+  --ambient-glow:#2E4347;
+  --accent-silver:#496163;
+  --metallic-highlight:#586F72;
+}
+html,body{background-color:#0D1416}
+body{background-image:radial-gradient(ellipse at 72% 8%,#374B4F30,transparent 38%),radial-gradient(ellipse at 50% 100%,#2E434720,transparent 46%)}
+.topbar,.sidebar,.stat-card,.featured-card,.list-card,.form-card,.launch-side,.local-launch-list{border-color:#374B4F}
+.stat-card,.featured-card,.list-card,.form-card,.local-launch-list{background:linear-gradient(145deg,#26393F,#0D1416)}
+.hero-banner{background:radial-gradient(ellipse at 72% 34%,#586F7240,transparent 44%),linear-gradient(112deg,#26393F 0%,#0D1416 72%)!important;border-color:#496163}
+.hero-grid{background-image:linear-gradient(#49616320 1px,transparent 1px),linear-gradient(90deg,#49616320 1px,transparent 1px)}
+.hero-copy h2 em,.hero-tag,.hero-copy .button,.text-link,.stat-icon.brand,.featured-card .featured-name,.period-chip svg{color:#B6C6C6}
+.hero-copy .button,.button-primary{background:linear-gradient(135deg,#496163,#586F72)!important;border-color:#586F72!important;color:#FFFFFF!important;box-shadow:0 5px 20px #2E434740!important}
+.button-primary:hover,.hero-copy .button:hover{background:#586F72!important}
+.button-secondary,.button-ghost,.period-chip,.search-field,.filter-tabs button{border-color:#374B4F}
+.button-secondary:hover,.button-ghost:hover{border-color:#586F72}
+.launch-preview{background:linear-gradient(145deg,#26393FF5,#0D1416F8);border-color:#496163}
+.preview-token-mark{background:#496163;color:#FFFFFF}
+.preview-live,.preview-live i{color:#B6C6C6}
+.preview-live i{background:#586F72}
+.preview-ticker{border-color:#496163;color:#B6C6C6}
+.chart-line{stroke:#586F72}
+.chart-area{fill:#586F7228}
+.preview-footer b,.hero-corner{color:#819596}
+.wallet-adapter-button.wallet-connect,.wallet-connect,
+.wallet-actions .wallet-connect,.wallet-actions .wallet-adapter-button,
+.wallet-actions .wallet-adapter-button-trigger,.wallet-actions button.wallet-connect{
+  background:linear-gradient(180deg,#496163 0%,#26393F 100%)!important;
+  border-color:#586F72!important;color:#FFFFFF!important;
+  box-shadow:0 2px 0 #FFFFFF08 inset,0 8px 24px #0A0F1140!important;
+}
+.wallet-adapter-button.wallet-connect:hover,.wallet-connect:hover,
+.wallet-actions .wallet-connect:hover,.wallet-actions .wallet-adapter-button:hover,
+.wallet-actions .wallet-adapter-button-trigger:hover,.wallet-actions button.wallet-connect:hover{
+  background:linear-gradient(180deg,#586F72 0%,#374B4F 100%)!important;border-color:#586F72!important;
+}
+.ca-copy-button,.wallet-actions .ca-copy-button{border-color:#374B4F!important;background:#0D1416!important;color:#B6C6C6!important}
+.ca-copy-button:hover,.wallet-actions .ca-copy-button:hover{border-color:#586F72!important;background:#26393F!important;color:#FFFFFF!important}
+.wallet-actions .online-dot{background:#586F72;box-shadow:0 0 0 3px #586F7228}
