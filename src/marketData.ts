@@ -7,6 +7,7 @@ export type LiveToken = {
   cap: string;
   volume: string;
   liquidity: number;
+  liquidityDisplay: string;
   volume24h: number;
   change24h: number | null;
   stage: string;
@@ -141,6 +142,7 @@ export async function fetchLiveSolanaTokens(): Promise<LiveToken[]> {
       cap: formatUsd(pair.marketCap ?? pair.fdv),
       volume: formatUsd(Number(pair.volume?.h24) || 0),
       liquidity,
+      liquidityDisplay: formatUsd(liquidity),
       volume24h: Number(pair.volume?.h24) || 0,
       change24h: pct,
       stage: age < 24 * 60 * 60 * 1000 ? "New launch" : "Live",
