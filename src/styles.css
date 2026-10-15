@@ -207,3 +207,48 @@ body{background-image:radial-gradient(ellipse at 72% 8%,#374B4F30,transparent 38
   .preview-chart{height:66px}
   .preview-footer{gap:9px}
 }
+
+
+/* Experimental electric-lime / graphite brand direction. */
+:root{--bg-primary:#131C17;--bg-vignette:#0D120F;--bg:#131C17;--panel:#1B201C;--panel2:#212523;--line:#2B382D;--muted:#A0AAA0;--muted2:#758075;--text:#FFFFFF;--text-main:#FFFFFF;--brand:#38F820;--brand-hover:#7EF97D;--cyan:#7EF97D;--green:#7EF97D;--gold:#7EF97D;--bg-surface:#1B201C;--ambient-glow:#2E632D;--accent-silver:#7EF97D;--metallic-highlight:#FFFFFF}
+html,body{background-color:#131C17}
+body{background-image:radial-gradient(70% 30% at 60% 0%,rgba(56,248,32,.07),transparent 70%),radial-gradient(45% 45% at 78% 92%,rgba(104,173,108,.09),transparent 70%)}
+.sidebar,.topbar,.app-footer{border-color:#2B382D}
+.sidebar,.topbar{background-color:rgba(19,28,23,.94)}
+.network-pill,.stat-card,.featured-card,.list-card,.form-card,.launch-side,.local-launch-list,.help-card,.search-field,.period-chip,.filter-tabs,.token-table-wrap,.settings-panel,.settings-nav,.activity-card,.launch-success,.fixed-supply{background:rgba(27,32,28,.78);border-color:#2B382D;backdrop-filter:blur(10px)}
+.stat-card,.featured-card,.list-card,.form-card,.local-launch-list{background:linear-gradient(145deg,rgba(33,37,35,.94),rgba(19,28,23,.96))}
+.hero-banner{background:radial-gradient(70% 30% at 60% 0%,rgba(56,248,32,.18),transparent 70%),radial-gradient(45% 45% at 78% 92%,rgba(104,173,108,.22),transparent 70%),linear-gradient(100deg,#212523 0%,#191C1A 55%,#131C17 100%)!important;border-color:#2B382D}
+.hero-banner::before{content:"";position:absolute;left:-10%;top:-4%;width:130%;height:3px;border-radius:999px;background:#fff;transform:rotate(11deg);transform-origin:0 0;box-shadow:0 0 6px 2px #fff,0 0 18px 6px #7EF97D,0 0 40px 14px #38F820,0 0 90px 36px rgba(56,248,32,.35),0 0 180px 80px rgba(46,99,45,.28);opacity:.82;pointer-events:none;z-index:1}
+.hero-grid{background-image:linear-gradient(#7EF97D12 1px,transparent 1px),linear-gradient(90deg,#7EF97D12 1px,transparent 1px)}
+.hero-copy h2,.welcome-row h1,.page-heading-row h1,.earnings-hero h2{color:#fff;text-shadow:0 0 24px rgba(255,255,255,.14)}
+.hero-copy h2 em,.hero-tag,.eyebrow,.eyebrow-line,.text-link,.hero-copy .button,.stat-icon.brand,.featured-card .featured-name,.period-chip svg,.bottom-note svg{color:#7EF97D}
+.hero-copy .button,.button-primary,.launch-cta,.startup-reload{background:linear-gradient(135deg,#38F820,#7EF97D)!important;border-color:#7EF97D!important;color:#10170F!important;box-shadow:0 5px 22px rgba(56,248,32,.16)!important}
+.hero-copy .button:hover,.button-primary:hover,.launch-cta:hover,.startup-reload:hover{background:#7EF97D!important;filter:none}
+.button-secondary,.button-ghost,.period-chip,.search-field,.filter-tabs button{border-color:#2B382D}
+.button-secondary:hover,.button-ghost:hover,.featured-card:hover{border-color:#7EF97D}
+.nav-item.active{background:rgba(56,248,32,.09);border-color:rgba(126,249,125,.2);color:#7EF97D}
+.nav-item.active svg,.help-icon,.help-card button,.brand-beta,.network-orb{color:#7EF97D}
+.brand-mark,.token-avatar.brand,.preview-token-mark{background:linear-gradient(135deg,#38F820,#7EF97D);color:#10170F;box-shadow:0 5px 18px rgba(56,248,32,.15)}
+.launch-preview{background:linear-gradient(145deg,rgba(33,37,35,.96),rgba(19,28,23,.97));border-color:#2B382D;backdrop-filter:blur(10px)}
+.preview-live,.preview-live i,.preview-ticker,.preview-footer b{color:#7EF97D}
+.preview-live i,.network-status,.market-live-dot,.footer-dot{background:#7EF97D}
+.preview-ticker{border-color:#2B382D}
+.chart-line{stroke:#7EF97D}.chart-area{fill:rgba(56,248,32,.12)}
+.preview-footer,.launch-preview-top,.featured-metrics,.local-launch-row{border-color:#2B382D}
+.wallet-adapter-button.wallet-connect,.wallet-connect,.wallet-actions .wallet-connect,.wallet-actions .wallet-adapter-button,.wallet-actions .wallet-adapter-button-trigger,.wallet-actions button.wallet-connect{background:linear-gradient(135deg,#38F820,#7EF97D)!important;border-color:#7EF97D!important;color:#10170F!important;box-shadow:0 5px 20px rgba(56,248,32,.15)!important}
+.wallet-adapter-button.wallet-connect:hover,.wallet-connect:hover,.wallet-actions .wallet-connect:hover,.wallet-actions .wallet-adapter-button:hover,.wallet-actions .wallet-adapter-button-trigger:hover,.wallet-actions button.wallet-connect:hover{background:#7EF97D!important;border-color:#7EF97D!important;color:#10170F!important}
+.ca-copy-button,.wallet-actions .ca-copy-button{border-color:#2B382D;background:#131C17;color:#7EF97D}
+.ca-copy-button:hover,.wallet-actions .ca-copy-button:hover{border-color:#7EF97D;background:#212523;color:#fff}
+.wallet-actions .online-dot{background:#7EF97D;box-shadow:0 0 0 3px rgba(56,248,32,.14)}
+.progress-track span{background:linear-gradient(90deg,#38F820,#7EF97D)}
+.token-avatar.teal{background:linear-gradient(145deg,#7EF97D,#2E632D);color:#10170F}
+.filter-tabs button.selected{background:#212523;color:#7EF97D}
+.draft-badge,.coming-badge,.neutral-tag,.fixed-supply-lock{color:#7EF97D;background:rgba(56,248,32,.08);border-color:rgba(126,249,125,.18)}
+.fixed-supply-icon,.success-check{color:#7EF97D;background:rgba(56,248,32,.09);border-color:rgba(126,249,125,.2)}
+.launch-success{border-color:#2B5A32;background:linear-gradient(150deg,#1b2a1c,#131C17)}
+.launch-success h3{color:#fff}.launch-success>p{color:#A0AAA0}
+.claim-message{border-color:#2B382D;background:#1B201C;color:#7EF97D}
+.startup-screen{background:#131C17}
+.startup-spinner{border-color:#2B382D;border-top-color:#7EF97D}
+.startup-status-mark{border-color:rgba(126,249,125,.35);background:rgba(56,248,32,.08);color:#7EF97D}
+@media(max-width:680px){.hero-banner::before{height:2px;opacity:.62;box-shadow:0 0 5px 1px #fff,0 0 15px 4px #7EF97D,0 0 30px 10px rgba(56,248,32,.7)}}
