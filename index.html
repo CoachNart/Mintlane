@@ -456,35 +456,49 @@
   /* ---------- Desktop hero: give the landing page a true wide-screen composition ---------- */
   @media (min-width: 961px) {
     .hero {
-      min-height: max(760px, 100svh);
-      padding: clamp(124px, 13vh, 168px) 0 clamp(100px, 10vh, 136px);
+      min-height: calc(100svh - 76px);
+      padding: 64px 0 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
       background:
         radial-gradient(42% 62% at 76% 46%, rgba(28,41,48,.92), transparent 74%),
         linear-gradient(180deg, #0A0D0F 0%, #050709 100%);
     }
-    .hero-grid > div {
-      max-width: 790px;
+    .hero-grid {
+      width: 100%;
+      flex: 1 0 auto;
+      display: flex;
+      align-items: center;
+      padding-top: 12px;
+      padding-bottom: 28px;
     }
+    .hero-grid > div { max-width: 720px; }
     .hero h1 {
-      font-size: clamp(82px, 8.2vw, 124px);
-      line-height: 1.01;
+      font-size: clamp(66px, 6.4vw, 98px);
+      line-height: 1.02;
       letter-spacing: -.055em;
     }
+    .hero .eyebrow { margin-bottom: 20px; }
     .hero p.lead {
-      max-width: 510px;
-      font-size: 18px;
-      line-height: 1.75;
-      margin-top: 30px;
+      max-width: 490px;
+      font-size: 16px;
+      line-height: 1.65;
+      margin-top: 22px;
     }
-    .hero-cta {
-      margin-top: 42px;
-      gap: 14px;
-    }
+    .hero-cta { margin-top: 28px; gap: 12px; }
+    .hero-status { width: 100%; flex: 0 0 auto; }
+    .hero-status .strip-in { padding-top: 14px; padding-bottom: 14px; }
   }
 
   /* ---------- Responsive ---------- */
+  .hero-status { position: relative; z-index: 3; }
   @media (max-width: 960px) {
-    .hero { padding-top: 80px; }
+    .hero { flex-direction: column; justify-content: space-between; padding-top: 80px; padding-bottom: 0; }
+    .hero-grid { width: 100%; flex: 1 0 auto; display: flex; align-items: center; padding-bottom: 30px; }
+    .hero-grid > div { width: 100%; }
+    .hero-status { width: 100%; }
+    .hero-status .strip-in { padding-top: 15px; padding-bottom: 15px; }
     .hero::before { background: linear-gradient(180deg, rgba(10,13,15,.78) 0%, rgba(10,13,15,.62) 45%, #0A0D0F 100%); }
     .split, .faq-wrap { grid-template-columns: 1fr; }
     .step-grid { grid-template-columns: 1fr; }
@@ -671,16 +685,14 @@
       </div>
     </div>
   </div>
-</section>
-
-<!-- ================= STATUS STRIP ================= -->
-<div class="strip" role="region" aria-label="Platform status">
-  <div class="strip-in">
-    <div class="strip-item">Network <b class="g-sol">Solana</b></div>
-    <div class="strip-item">Token creation <i class="live" aria-hidden="true"></i><b class="g-live">Available</b></div>
-    <div class="strip-item">Wallet <b id="stripWallet" class="g-wallet">Connect to get started</b></div>
+  <div class="strip hero-status" role="region" aria-label="Platform status">
+    <div class="strip-in">
+      <div class="strip-item">Network <b class="g-sol">Solana</b></div>
+      <div class="strip-item">Token creation <i class="live" aria-hidden="true"></i><b class="g-live">Available</b></div>
+      <div class="strip-item">Wallet <b id="stripWallet" class="g-wallet">Connect to get started</b></div>
+    </div>
   </div>
-</div>
+</section>
 
 <!-- ================= FEATURED ================= -->
 <section class="block" id="explore">
