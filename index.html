@@ -453,9 +453,9 @@
     finished = true; loader.classList.add("is-done"); root.classList.remove("is-loading");
     window.setTimeout(function () { loader.remove(); }, 750);
   }
-  function ready() { window.setTimeout(finishLoading, Math.max(0, 850 - (performance.now() - started))); }
+  function ready() { window.setTimeout(finishLoading, Math.max(0, 2400 - (performance.now() - started))); }
   if (document.readyState === "complete") ready(); else window.addEventListener("load", ready, { once: true });
-  window.setTimeout(finishLoading, 3200);
+  window.setTimeout(finishLoading, 7000);
 })();
 </script>
 <div class="progress" id="progress" aria-hidden="true"></div>
@@ -748,7 +748,7 @@
 
 <script>
   /* ====== CONFIG — wire these to your real product ====== */
-  const LAUNCH_URL = "/launch";            // token-launch flow
+  const LAUNCH_URL = "/app.html?page=launch"; // open the actual React app launch screen
   const CONTRACT_ADDRESS = "";             // paste the CA here when it's ready
   /* Real token data goes here. Each item:
      { name, ticker, address, status, image, url, createdAt: "2026-10-01" }
