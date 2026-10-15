@@ -1,4 +1,7 @@
 name: Mintlane CI
+concurrency:
+  group: mintlane-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 on:
   push:
     branches: [main]
