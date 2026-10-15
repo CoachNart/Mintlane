@@ -36,7 +36,8 @@ function StartupScreen({ failed = false }: { failed?: boolean }) {
 const rootElement = document.getElementById("root");
 if (rootElement) {
   const root = ReactDOM.createRoot(rootElement);
-  root.render(<StartupScreen />);
+  // The cinematic entry loader belongs to the landing page only. Keep the app route free of a second loader.
+  root.render(null);
 
   Promise.all([
     import("./App"),
