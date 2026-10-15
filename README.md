@@ -1,6 +1,6 @@
 # Mintlane
 
-Mintlane is a Solana launchpad interface for token discovery, token launch setup, wallet-connected portfolio views, and creator-fee tracking.
+Mintlane is a Solana launchpad frontend for token discovery, token creation, and creator-fee rewards.
 
 ## Run locally
 
@@ -11,26 +11,35 @@ Mintlane is a Solana launchpad interface for token discovery, token launch setup
 - `npm run typecheck`
 - `npm run build`
 
-The starter uses Solana devnet by default. Connect Phantom or Solflare to test wallet connectivity.
+The wallet and launch flow default to Solana devnet. Connect Phantom or Solflare and fund that wallet with devnet SOL for test transactions.
 
-## Product status — read before mainnet
+## Current implementation
 
-The UI is scaffolded and responsive. Market cards are explicitly marked as sample/demo data until a verified live market-data provider is configured. Draft launch details and local preferences are saved in the browser only.
+- Responsive Mintlane workspace: overview, discovery, launch flow, portfolio, creator earnings, activity, and settings.
+- Phantom/Solflare wallet adapter integration.
+- Metaplex Genesis bonding-curve launch integration using the official SDK API. Token creation is configured for **devnet only**.
+- Creator fee wallet is set to the connected creator wallet.
+- Creator reward claim flow asks the Genesis API for eligible claim transactions and requests wallet approval before sending them.
+- Token launch drafts and locally created launch records are saved in browser local storage.
+- Discovery cards are illustrative demo data until a live market-data/indexing provider is connected. They are clearly labelled and must not be treated as real prices or executable markets.
 
-**Token deployment and creator-fee claiming are not yet connected to a launch protocol.** A regular SPL token mint does not by itself implement a bonding curve, liquidity migration, or trade-based creator-fee rewards. Those actions must be wired to a selected, audited protocol SDK/program and verified on devnet before mainnet. No private key is stored by this app and no transaction is silently submitted.
+## Important launch requirements
 
-## Suggested integration sequence
+- The Genesis bonding-curve flow uses a fixed protocol supply of 1,000,000,000 tokens with 6 decimals; the UI reflects this.
+- Token metadata image must be a public Irys gateway URL (`https://gateway.irys.xyz/...`). This starter accepts an existing Irys URL; it does not yet upload image files to Irys for you.
+- A real launch requires a connected wallet, devnet SOL, and the wallet approval of the requested transactions. Never share a seed phrase or private key.
+- Creator rewards depend on eligible trades and protocol state; this UI does not invent or guarantee earnings. Claiming on devnet only affects devnet rewards.
+- This is a devnet implementation and has not been independently security-audited. Do not switch to mainnet until launch and claim flows have been tested end-to-end and reviewed.
 
-1. Confirm launch mechanism and creator-fee terms with the chosen protocol.
-2. Add the protocol SDK behind a typed launch adapter; simulate and verify every instruction on devnet.
-3. Add a real market-data provider and token metadata/indexing source.
-4. Read creator reward balances from the protocol and implement signed claim transactions.
-5. Add transaction-status tracking, error telemetry, rate limits, and security review.
-6. Only then configure mainnet RPC and production deployment.
+## Protocol references
+
+- [Metaplex Genesis bonding-curve launch guide](https://www.metaplex.com/docs/smart-contracts/genesis/bonding-curve-launch)
+- [Genesis API client and creator reward claims](https://www.metaplex.com/docs/smart-contracts/genesis/sdk/api-client)
+- [Genesis creator-fee documentation](https://www.metaplex.com/docs/smart-contracts/genesis/creator-fees)
 
 ## Environment
 
-- `VITE_SOLANA_RPC_URL`: optional RPC URL. Development defaults to Solana devnet.
-- `VITE_MARKET_DATA_URL`: optional compatible market-data endpoint; sample data remains labelled demo until integration is implemented.
+- `VITE_SOLANA_RPC_URL`: optional Solana RPC endpoint. Defaults to public devnet.
+- `VITE_MARKET_DATA_URL`: reserved for a future live market-data provider integration.
 
 Never put seed phrases, private keys, or server secrets in frontend environment variables.
