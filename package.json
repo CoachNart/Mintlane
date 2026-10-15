@@ -18,7 +18,7 @@
     "lucide-react": "^0.468.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "@metaplex-foundation/genesis": "^0.8.0",
+    "@metaplex-foundation/genesis": "^0.43.4",
     "@metaplex-foundation/umi-bundle-defaults": "^1.5.1",
     "@metaplex-foundation/umi-signer-wallet-adapters": "^1.5.1"
   },
