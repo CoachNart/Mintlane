@@ -54,8 +54,9 @@ function formatUsd(value: number | null | undefined): string {
 }
 
 function formatPrice(value: string | null | undefined): string {
+  if (value == null || value.trim() === "") return "—";
   const price = Number(value);
-  if (!Number.isFinite(price) || price < 0) return "—";
+  if (!Number.isFinite(price) || price <= 0) return "—";
   if (price >= 1) return "$" + price.toLocaleString("en-US", { maximumFractionDigits: 4 });
   if (price >= 0.01) return "$" + price.toFixed(4);
   if (price >= 0.0001) return "$" + price.toFixed(6);
@@ -116,7 +117,7 @@ export async function fetchLiveSolanaTokens(): Promise<LiveToken[]> {
     if (pair?.chainId?.toLowerCase() !== "solana") continue;
     const address = pair.baseToken?.address;
     const price = Number(pair.priceUsd);
-    if (!address || !candidates.has(address) || !Number.isFinite(price) || price < 0) continue;
+    if (!address || !candidates.has(address) || !pair.priceUsd || !Number.isFinite(price) || price <= 0) continue;
     const previous = bestPairs.get(address);
     if (!previous || (pair.liquidity?.usd || 0) > (previous.liquidity?.usd || 0)) {
       bestPairs.set(address, pair);
