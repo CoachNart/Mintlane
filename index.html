@@ -453,6 +453,35 @@
     .nav-launch { width: 27px; height: 27px; }
   }
 
+  /* ---------- Desktop hero: give the landing page a true wide-screen composition ---------- */
+  @media (min-width: 961px) {
+    .hero {
+      min-height: max(760px, 100svh);
+      padding: clamp(124px, 13vh, 168px) 0 clamp(100px, 10vh, 136px);
+      background:
+        radial-gradient(42% 62% at 76% 46%, rgba(28,41,48,.92), transparent 74%),
+        linear-gradient(180deg, #0A0D0F 0%, #050709 100%);
+    }
+    .hero-grid > div {
+      max-width: 790px;
+    }
+    .hero h1 {
+      font-size: clamp(82px, 8.2vw, 124px);
+      line-height: 1.01;
+      letter-spacing: -.055em;
+    }
+    .hero p.lead {
+      max-width: 510px;
+      font-size: 18px;
+      line-height: 1.75;
+      margin-top: 30px;
+    }
+    .hero-cta {
+      margin-top: 42px;
+      gap: 14px;
+    }
+  }
+
   /* ---------- Responsive ---------- */
   @media (max-width: 960px) {
     .hero { padding-top: 80px; }
