@@ -23,7 +23,7 @@ const navGroups = [
   {label:"WORKSPACE",items:[{name:"Overview" as Page,icon:Grid2X2},{name:"Explore" as Page,icon:Compass},{name:"Launch token" as Page,icon:Rocket}]},
   {label:"YOUR ACCOUNT",items:[{name:"Portfolio" as Page,icon:Layers3},{name:"Creator earnings" as Page,icon:Gem},{name:"Activity" as Page,icon:Activity}]}
 ];
-function moneyAddress(s:string){return s.length>12?s.slice(0,5)+"…"+s.slice(-5):s}
+const CA_ADDRESS = ""; // Set the token contract address here when it is available.\nfunction moneyAddress(s:string){return s.length>12?s.slice(0,5)+"…"+s.slice(-5):s}
 function readDraft(){try{return JSON.parse(localStorage.getItem("mintlane-launch-draft")||"{}")}catch{return {}}}
 function App(){
   const [page,setPage]=useState<Page>("Overview");
@@ -99,7 +99,7 @@ function App(){
     }catch(err:any){setClaimMessage(/no rewards available/i.test(err?.message||"")?"No creator rewards are currently available for this wallet on devnet.":err?.message||"Could not claim creator rewards. Please try again.");}
     finally{setClaiming(false)}
   };
-  const walletButton=<WalletMultiButton className="wallet-connect">{connected?<><span className="online-dot"/>{moneyAddress(address)}</>:"Connect wallet"}</WalletMultiButton>;
+  const walletButton=<div className="wallet-actions"><WalletMultiButton className="wallet-connect">{connected?<><span className="online-dot"/>{moneyAddress(address)}</>:"Connect wallet"}</WalletMultiButton><button type="button" className="ca-copy-button" onClick={()=>CA_ADDRESS?copy(CA_ADDRESS):setNotice("Contract address will be added soon.")} aria-label="Copy contract address" title={CA_ADDRESS?"Copy contract address":"Contract address coming soon"}><Copy size={14}/><span>Copy CA</span></button></div>;
   const TokenAvatar=({token}:{token:Token})=><div className={"token-avatar "+token.color}>{token.initials}</div>;
   const tokenTable=(list:Token[])=> <div className="token-table-wrap"><table className="token-table"><thead><tr><th>ASSET</th><th>PRICE</th><th>24H CHANGE</th><th>MARKET CAP</th><th>VOLUME</th><th></th></tr></thead><tbody>{list.map(t=><tr key={t.ticker} onClick={()=>setNotice("Token detail and trading are waiting for live market-data integration.")}><td><div className="asset-cell"><TokenAvatar token={t}/><div><strong>{t.name}</strong><span>{t.ticker} <span className="tiny-bullet">·</span> {t.stage}</span></div></div></td><td className="mono">{t.price}</td><td><span className={t.change.startsWith("+")?"positive":"negative"}>{t.change}</span></td><td className="mono">{t.cap}</td><td className="mono">{t.volume}</td><td><button className="icon-btn row-arrow" aria-label={"Open "+t.name}><ArrowUpRight size={16}/></button></td></tr>)}</tbody></table><div className="demo-foot"><span className="demo-dot"/> Illustrative sample data · not live prices or executable markets</div></div>;
   const pageTitle:Record<Page,string>={"Overview":"Overview","Explore":"Explore tokens","Launch token":"Launch your token","Portfolio":"Your portfolio","Creator earnings":"Creator earnings","Activity":"Activity","Settings":"Settings"};
