@@ -418,9 +418,46 @@
     .strip-item { padding: 0 14px; font-size: 12.5px; }
     details p { padding-right: 0; }
   }
+
+  /* ---------- Minimal cinematic entry loader ---------- */
+  html.is-loading, html.is-loading body { overflow: hidden; }
+  #entry-loader { position: fixed; inset: 0; z-index: 99999; display: grid; place-items: center; background: #050709; color: #D1DBE2; opacity: 1; visibility: visible; transition: opacity .65s cubic-bezier(.2,.7,.2,1), visibility .65s; }
+  #entry-loader::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .18; background: radial-gradient(ellipse at 50% 45%, rgba(87,112,126,.22), transparent 48%), linear-gradient(135deg, transparent 49.8%, rgba(209,219,226,.035) 50%, transparent 50.2%); }
+  #entry-loader.is-done { opacity: 0; visibility: hidden; pointer-events: none; }
+  .loader-core { position: relative; width: min(280px, 72vw); display: grid; justify-items: center; gap: 28px; }
+  .loader-orbit { position: relative; width: 76px; height: 76px; display: grid; place-items: center; }
+  .loader-orbit::before, .loader-orbit::after { content: ""; position: absolute; inset: 0; border: 1px solid rgba(209,219,226,.16); border-radius: 50%; }
+  .loader-orbit::before { border-top-color: #F0F4F8; border-right-color: rgba(209,219,226,.5); animation: loaderSpin 1.25s cubic-bezier(.55,.1,.35,.9) infinite; }
+  .loader-orbit::after { inset: 10px; border-bottom-color: rgba(209,219,226,.8); border-left-color: transparent; animation: loaderSpin 1.8s linear infinite reverse; }
+  .loader-orbit span { width: 5px; height: 5px; border-radius: 50%; background: #F0F4F8; box-shadow: 0 0 18px rgba(209,219,226,.65); animation: loaderPulse 1.4s ease-in-out infinite; }
+  .loader-caption { font: 10px/1.4 var(--mono); letter-spacing: .24em; text-transform: uppercase; color: #8B959C; text-align: center; }
+  .loader-track { width: 100%; height: 2px; background: rgba(209,219,226,.12); overflow: hidden; }
+  .loader-progress { height: 100%; width: 38%; background: linear-gradient(90deg, transparent, #D1DBE2, #F0F4F8); transform: translateX(-110%); animation: loaderProgress 1.65s cubic-bezier(.4,0,.2,1) infinite; }
+  @keyframes loaderSpin { to { transform: rotate(360deg); } }
+  @keyframes loaderPulse { 0%,100% { transform: scale(.72); opacity: .55; } 50% { transform: scale(1.2); opacity: 1; } }
+  @keyframes loaderProgress { 0% { transform: translateX(-110%); } 100% { transform: translateX(370%); } }
+  @media (prefers-reduced-motion: reduce) { .loader-orbit::before, .loader-orbit::after, .loader-orbit span, .loader-progress { animation-duration: 3s; } #entry-loader { transition-duration: .2s; } }
+
 </style>
 </head>
 <body>
+<div id="entry-loader" role="status" aria-label="Loading Mintlane"><div class="loader-core"><div class="loader-orbit" aria-hidden="true"><span></span></div><div class="loader-caption">Preparing your launchpad</div><div class="loader-track" aria-hidden="true"><div class="loader-progress"></div></div></div></div>
+<script>
+(function () {
+  var root = document.documentElement, loader = document.getElementById("entry-loader");
+  if (!loader) return;
+  root.classList.add("is-loading");
+  var finished = false, started = performance.now();
+  function finishLoading() {
+    if (finished) return;
+    finished = true; loader.classList.add("is-done"); root.classList.remove("is-loading");
+    window.setTimeout(function () { loader.remove(); }, 750);
+  }
+  function ready() { window.setTimeout(finishLoading, Math.max(0, 850 - (performance.now() - started))); }
+  if (document.readyState === "complete") ready(); else window.addEventListener("load", ready, { once: true });
+  window.setTimeout(finishLoading, 3200);
+})();
+</script>
 <div class="progress" id="progress" aria-hidden="true"></div>
 
 <!-- Shared SVG gradients and the Mintlane mark (swap the symbol for your real brand mark) -->
