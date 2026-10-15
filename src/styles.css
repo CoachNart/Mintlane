@@ -23,3 +23,15 @@
 .startup-reload:hover{background:#3f55e6;transform:translateY(-1px)}
 @keyframes startup-spin{to{transform:rotate(360deg)}}
 @media(prefers-reduced-motion:reduce){.startup-spinner{animation:none}}
+
+
+/* Unified, compact wallet controls. CA address is intentionally unconfigured until provided. */
+.wallet-actions{display:flex;align-items:center;gap:8px;min-width:0}
+.wallet-adapter-button.wallet-connect,.wallet-connect{height:38px!important;min-height:38px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:8px!important;padding:0 14px!important;border:1px solid #4f6bff!important;border-radius:10px!important;background:linear-gradient(135deg,#4f6bff,#3f55e6)!important;color:#fff!important;font:600 11px 'DM Sans',sans-serif!important;box-shadow:0 5px 18px #4f6bff22!important;transition:transform .18s ease,box-shadow .18s ease,filter .18s ease!important;white-space:nowrap!important}
+.wallet-adapter-button.wallet-connect:hover,.wallet-connect:hover{filter:brightness(1.08)!important;transform:translateY(-1px);box-shadow:0 8px 22px #4f6bff38!important}
+.wallet-adapter-button.wallet-connect:focus-visible,.ca-copy-button:focus-visible{outline:2px solid #aab6ff!important;outline-offset:3px}
+.ca-copy-button{height:38px;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:0 12px;border:1px solid #343b58;border-radius:10px;background:linear-gradient(180deg,#171b2a,#111522);color:#c9d0e8;font:600 10px 'DM Sans',sans-serif;white-space:nowrap;cursor:pointer;transition:border-color .18s ease,background .18s ease,color .18s ease,transform .18s ease}
+.ca-copy-button svg{color:#9fb0ff;flex-shrink:0}
+.ca-copy-button:hover{border-color:#4f6bff;background:#171c30;color:#fff;transform:translateY(-1px)}
+.ca-copy-button:active{transform:translateY(0)}
+@media(max-width:680px){.wallet-actions{gap:5px}.wallet-adapter-button.wallet-connect,.wallet-connect{max-width:128px;min-width:0;padding:0 10px!important;font-size:10px!important}.ca-copy-button{width:34px;padding:0;gap:0}.ca-copy-button span{display:none}}
