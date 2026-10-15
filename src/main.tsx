@@ -3,12 +3,11 @@ import ReactDOM from "react-dom/client";
 import { ConnectionProvider, WalletProvider } from "@solana/wallet-adapter-react";
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import { PhantomWalletAdapter, SolflareWalletAdapter } from "@solana/wallet-adapter-wallets";
-import { clusterApiUrl } from "@solana/web3.js";
 import App from "./App";
 import "./styles.css";
 import "@solana/wallet-adapter-react-ui/styles.css";
 
-const endpoint = import.meta.env.VITE_SOLANA_RPC_URL || clusterApiUrl("devnet");
+const endpoint = "https://api.devnet.solana.com";
 const wallets = [new PhantomWalletAdapter(), new SolflareWalletAdapter()];
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
