@@ -6,7 +6,7 @@ import {
   Search, Settings2, ShieldCheck, Sparkles, TrendingUp, Wallet, X, Zap
 } from "lucide-react";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { createAndRegisterLaunch, claimCreatorRewards } from "@metaplex-foundation/genesis";
+
 import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
 import { walletAdapterIdentity } from "@metaplex-foundation/umi-signer-wallet-adapters";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
@@ -58,6 +58,7 @@ function App(){
     if(!/^https:\/\/gateway\.irys\.xyz\//i.test(draft.image||"")){setLaunchError("Add a public image URL from https://gateway.irys.xyz/ before launching.");return}
     setLaunching(true);setLaunchError("");setLaunchResult(null);
     try{
+      const { createAndRegisterLaunch } = await import("@metaplex-foundation/genesis");
       const umi=createUmiForWallet();
       const result=await createAndRegisterLaunch(umi,{},{
         wallet:publicKey.toBase58(),
@@ -80,6 +81,7 @@ function App(){
     if(!connected||!publicKey){setClaimMessage("Connect your wallet first.");return}
     setClaiming(true);setClaimMessage("");
     try{
+      const { claimCreatorRewards } = await import("@metaplex-foundation/genesis");
       const umi=createUmiForWallet();
       const result=await claimCreatorRewards(umi,{}, {wallet:publicKey.toBase58(),network:"solana-devnet"});
       let claimed=0;
