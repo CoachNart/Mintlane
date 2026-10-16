@@ -1166,12 +1166,12 @@
         float l = .16 + .44 * diff * diff + .55 * spec + .24 * rim * band;
         l = pow(l, 1.12);
 
-        vec3 c0 = vec3(.020, .027, .035);   // #1e1e23
-        vec3 c1 = vec3(.086, .122, .141);   // #4a4a53
-        vec3 c2 = vec3(.110, .161, .188);   // #77747a
-        vec3 c3 = vec3(.545, .584, .612);   // #77747a
-        vec3 c4 = vec3(.820, .859, .886);   // #fff4a3
-        vec3 c5 = vec3(.941, .957, .973);   // #f5f2f0
+        vec3 c0 = vec3(.118, .118, .137);   // #1E1E23
+        vec3 c1 = vec3(.216, .216, .247);   // #37373F
+        vec3 c2 = vec3(.290, .290, .325);   // #4A4A53
+        vec3 c3 = vec3(.467, .455, .478);   // #77747A
+        vec3 c4 = vec3(.769, .753, .757);   // #C4C0C1
+        vec3 c5 = vec3(.961, .949, .941);   // #F5F2F0
         vec3 col = mix(c0, c1, smoothstep(0., .3, l));
         col = mix(col, c2, smoothstep(.2, .45, l));
         col = mix(col, c3, smoothstep(.45, .8, l));
