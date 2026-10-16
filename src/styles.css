@@ -256,3 +256,8 @@ body{background-image:radial-gradient(70% 30% at 60% 0%,rgba(255, 244, 163, .07)
 
 /* Mintlane warm graphite palette */
 :root{--brand-charcoal:#37373F;--brand-slate:#4A4A53;--brand-warm-grey:#77747A;--brand-silver:#C4C0C1;--brand-off-white:#F5F2F0;--brand-pale-yellow:#FFF4A3;--brand-soft-gold:#D8C17A;--brand-black:#1E1E23;}
+
+/* Brand surface hierarchy: charcoal canvas, slate navigation and panels */
+.sidebar{background:#4A4A53!important}
+.topbar{background:rgba(74,74,83,.94)!important}
+.stat-card,.featured-card,.list-card,.form-card,.local-launch-list,.settings-panel,.activity-card,.token-table-wrap,.filter-tabs,.data-warning,.protocol-callout,.connected-panel,.launch-preview{background:linear-gradient(145deg,#4A4A53,#37373F)!important}
