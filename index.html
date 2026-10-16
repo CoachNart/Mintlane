@@ -685,6 +685,23 @@
   @media(max-width:680px){.price-ticker{min-height:58px}.ticker-label{padding:0 12px;font-size:8px;gap:6px}.ticker-label b{font-size:8px;padding:4px 5px}.ticker-track{min-height:58px}.ticker-token{padding:0 13px;gap:7px}.ticker-token strong{font-size:10px}.ticker-move{font-size:9px}.ecosystem-note{font-size:9px;line-height:1.6;flex-wrap:wrap}.token-price-row strong{font-size:17px}}
   @media(prefers-reduced-motion:reduce){.ticker-track{animation:none;overflow-x:auto}.ticker-viewport{overflow-x:auto}}
 
+
+  /* Token directory table — rows, not cards */
+  .token-directory-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:18px 0 12px;color:#829087;font:10px var(--mono);letter-spacing:.035em}
+  .token-directory-bar span:first-child{color:#b8f58b}
+  .token-table-wrap{width:100%;overflow-x:auto;border:1px solid rgba(126,249,125,.14);border-radius:14px;background:linear-gradient(145deg,rgba(20,28,23,.92),rgba(12,17,14,.96));box-shadow:0 18px 55px rgba(0,0,0,.18)}
+  .token-table{width:100%;border-collapse:collapse;text-align:left;min-width:670px}
+  .token-table th{padding:15px 18px;color:#748178;font:9px var(--mono);font-weight:500;text-transform:uppercase;letter-spacing:.1em;background:rgba(126,249,125,.035);border-bottom:1px solid rgba(126,249,125,.12)}
+  .token-table td{padding:13px 18px;border-bottom:1px solid rgba(255,255,255,.045);font-size:12px;color:#d9e4da;white-space:nowrap}
+  .token-table tbody tr:last-child td{border-bottom:0}.token-table tbody tr{transition:background .18s ease}.token-table tbody tr:hover{background:rgba(126,249,125,.045)}
+  .table-token{display:flex;align-items:center;gap:11px;min-width:190px}.table-logo{width:36px;height:36px;display:block;flex:none;overflow:hidden;border-radius:11px;border:1px solid rgba(255,255,255,.09)}.table-logo svg{width:100%;height:100%;display:block}
+  .table-token-copy{display:grid;gap:4px}.table-token-copy strong{font-size:12px;font-weight:600;color:#f1f8f0}.table-token-copy small{font:10px var(--mono);color:#7f8e83}.table-token-copy small i{font-style:normal;color:#536157;font-size:9px}
+  .table-price{font:500 12px var(--mono);color:#f3fff0!important}.table-category{display:inline-flex;border:1px solid rgba(126,249,125,.12);background:rgba(126,249,125,.045);padding:5px 8px;border-radius:6px;color:#aab7ad;font-size:10px}
+  .table-market-link{display:inline-flex;gap:8px;align-items:center;color:#b6f58c;font-size:11px;text-decoration:none;white-space:nowrap}.table-market-link:hover{color:#e2ffc6}.table-market-link span{font-size:13px}
+  .token-table .token-change{display:inline-flex;align-items:center;padding:6px 8px;border-radius:6px;font:10px var(--mono)}.token-table .token-change.up{color:#83f0ad;background:rgba(90,223,139,.1)}.token-table .token-change.down{color:#ff98a7;background:rgba(255,110,130,.1)}.token-table .token-change.flat{color:#8b959c;background:rgba(139,149,156,.1)}
+  .token-empty{margin-top:12px}.token-empty[hidden],.token-table-wrap[hidden]{display:none}
+  @media(max-width:680px){.token-directory-bar{font-size:9px;align-items:flex-start}.token-directory-bar span:last-child{text-align:right;max-width:55%}.token-table th,.token-table td{padding:12px 14px}}
+
 </style>
 </head>
 <body>
@@ -945,8 +962,14 @@
         <button class="chip" type="button" data-filter="recent" aria-pressed="false">Recently added</button>
       </div>
     </div>
-    <div class="cards" id="results"></div>
-    <div class="empty" id="empty">
+    <div class="token-directory-bar"><span id="tokenCount">12 tokens</span><span>Prices in USD · refreshed every minute</span></div>
+    <div class="token-table-wrap">
+      <table class="token-table">
+        <thead><tr><th>Token</th><th>Price</th><th>24H change</th><th>Category</th><th></th></tr></thead>
+        <tbody id="results"></tbody>
+      </table>
+    </div>
+    <div class="empty token-empty" id="empty">
       <svg viewBox="0 0 44 44" fill="none" stroke="#8B959C" stroke-width="1.2" aria-hidden="true"><polygon points="22,4 38,13 38,31 22,40 6,31 6,13"/><path d="M14 28V16l8 8 8-8v12"/></svg>
       <p>No matching tokens. Try another search or switch filters to explore the Solana ecosystem.</p>
       <a class="btn btn-ghost" data-launch href="/launch">Be among the first creators</a>
@@ -1221,38 +1244,43 @@
     p0.connect({ onlyIfTrusted: true }).then(r => setWallet(r.publicKey.toString())).catch(() => {});
   }
 
-  /* ====== Token cards ====== */
+  /* ====== Token directory table ====== */
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
-  const card = t => `
-    <article class="card">
-      <div class="card-top">
-        <div class="mono-badge token-logo">${t.image || esc((t.ticker||t.name||"?").slice(0,2).toUpperCase())}</div>
-        <div class="token-card-name"><h3>${esc(t.name)}</h3><div class="ticker">${esc(t.ticker)} <span class="token-network">· SOLANA</span></div></div>
-        ${t.newOnMintlane ? '<span class="token-new">NEW</span>' : ''}
-      </div>
-      <div class="token-price-row"><div><span>Token price</span><strong data-price-id="${esc(t.id)}">${esc(t.price)}</strong></div><span class="token-change flat" data-change-id="${esc(t.id)}">24H —</span></div>
-      <div class="card-meta">
-        <div><span>Category</span><span>${esc(t.status)}</span></div>
-        <div><span>Market</span><span>Solana</span></div>
-      </div>
-      <a class="view" href="${esc(t.url)}" target="_blank" rel="noopener noreferrer">View market <span>↗</span></a>
-    </article>`;
+  const tokenRows = list => list.map(t => `
+    <tr class="token-row">
+      <td><div class="table-token"><span class="table-logo">${t.image}</span><span class="table-token-copy"><strong>${esc(t.name)}</strong><small>${esc(t.ticker)} <i>· SOLANA</i></small></span>${t.newOnMintlane?'<span class="token-new">NEW</span>':''}</div></td>
+      <td class="table-price" data-price-id="${esc(t.id)}">${esc(t.price)}</td>
+      <td><span class="token-change flat" data-change-id="${esc(t.id)}">—</span></td>
+      <td><span class="table-category">${esc(t.status)}</span></td>
+      <td><a class="table-market-link" href="${esc(t.url)}" target="_blank" rel="noopener noreferrer">View market <span>↗</span></a></td>
+    </tr>`).join("");
   const featured = document.getElementById("featured");
-  const stagger = el => [...el.children].forEach((c, i) => c.style.setProperty("--i", Math.min(i, 10)));
-  featured.innerHTML = TOKENS.filter(t=>t.featured).map(card).join(""); stagger(featured);
-
-  /* ====== Discovery (search + implemented filters only) ====== */
-  const results = document.getElementById("results"), empty = document.getElementById("empty"), q = document.getElementById("q");
+  featured.hidden = true;
+  const results = document.getElementById("results");
+  const empty = document.getElementById("empty");
+  const q = document.getElementById("q");
+  const tabs = document.querySelectorAll("[data-filter]");
   let filter = "all";
   function render() {
     const term = q.value.trim().toLowerCase();
-    let list = TOKENS.filter(t => !term || (t.name + " " + t.ticker).toLowerCase().includes(term));
-    const byDate = [...list].sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
-    if (filter === "new") list = TOKENS.filter(t => t.newOnMintlane).filter(t => !term || (t.name + " " + t.ticker).toLowerCase().includes(term));
-    if (filter === "recent") list = byDate;
-    results.innerHTML = list.map(card).join(""); stagger(results);
+    let list = [...TOKENS];
+    if (filter === "new") list = list.filter(t => t.newOnMintlane);
+    if (filter === "recent") list.sort((a,b) => new Date(b.createdAt||0)-new Date(a.createdAt||0));
+    if (term) list = list.filter(t => (t.name+" "+t.ticker+" "+t.status).toLowerCase().includes(term));
+    results.innerHTML = tokenRows(list);
+    results.closest(".token-table-wrap").hidden = list.length===0;
     empty.style.display = list.length ? "none" : "";
+    const count=document.getElementById("tokenCount");
+    if(count) count.textContent=list.length+(list.length===1?" token":" tokens");
   }
+  tabs.forEach(tab=>tab.addEventListener("click",()=>{
+    filter=tab.dataset.filter;
+    tabs.forEach(t=>{const active=t===tab;t.classList.toggle("active",active);t.setAttribute("aria-pressed",String(active));});
+    render();
+  }));
+  q.addEventListener("input",render);
+  render();
+
   /* Live price tape + token card prices. */
   const priceIds = TOKENS.map(t=>t.id).join(",");
   const ticker = document.getElementById("priceTicker");
