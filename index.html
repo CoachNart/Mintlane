@@ -661,7 +661,52 @@
   }
 
 
-  /* ---------- Live token price ticker ---------- */
+  /* ---------- Asymmetric floating market tape ---------- */
+  .price-ticker{position:relative;z-index:3;display:flex;align-items:stretch;min-height:82px;width:min(100%,1180px);margin:26px auto 0;overflow:hidden;background:linear-gradient(112deg,rgba(13,20,15,.95),rgba(24,35,25,.88) 47%,rgba(12,17,14,.96));border:1px solid rgba(126,249,125,.22);border-radius:7px 26px 7px 26px;box-shadow:0 18px 55px rgba(0,0,0,.26),inset 0 1px 0 rgba(255,255,255,.045);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+  .price-ticker::before{content:"";position:absolute;left:0;top:0;width:34%;height:1px;background:linear-gradient(90deg,#38f820,transparent);opacity:.9;pointer-events:none}
+  .ticker-label{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:5px;flex:none;width:128px;padding:12px 16px;background:linear-gradient(130deg,rgba(56,248,32,.09),rgba(16,21,17,.8));border-right:1px solid rgba(126,249,125,.14);font:9px var(--mono);letter-spacing:.13em;color:#aab6ad;white-space:nowrap}
+  .ticker-label b{font-size:8px;letter-spacing:.09em;color:#131c17;background:linear-gradient(135deg,#d5ff8f,#75e8bd);padding:4px 6px;border-radius:3px 7px 3px 7px}
+  .ticker-live-dot,.note-pulse{width:6px;height:6px;border-radius:50%;background:#7de9a7;box-shadow:0 0 0 4px rgba(125,233,167,.1);flex:none}
+  .ticker-label>span:nth-child(2){margin-top:4px}
+  .ticker-viewport{min-width:0;flex:1;overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 3%,#000 96%,transparent)}
+  .ticker-track{display:flex;width:max-content;min-height:82px;align-items:center;animation:tickerLeft 92s linear infinite}
+  .ticker-viewport:hover .ticker-track{animation-play-state:paused}
+  .ticker-token{position:relative;height:52px;display:flex;align-items:center;gap:10px;padding:0 16px 0 14px;border-right:1px solid rgba(126,249,125,.09);white-space:nowrap;font-size:12px;transform:translateY(0);transition:background .25s}
+  .ticker-token:nth-child(4n+2){transform:translateY(-5px)}
+  .ticker-token:nth-child(5n+3){transform:translateY(6px)}
+  .ticker-token:nth-child(7n+1){transform:translateY(-2px)}
+  .ticker-icon{width:29px;height:29px;display:block;border-radius:10px 5px 10px 5px;overflow:hidden;flex:none;border:1px solid rgba(255,255,255,.12);box-shadow:0 3px 12px rgba(0,0,0,.25)}
+  .ticker-icon img,.ticker-icon svg{display:block;width:100%;height:100%;object-fit:cover}
+  .ticker-data{display:grid;grid-template-columns:auto auto;align-items:baseline;gap:0 10px}
+  .ticker-symbol{font:600 10px var(--mono);color:#e9f1e9;letter-spacing:.04em}
+  .ticker-token strong{font:500 11px var(--mono);color:#fff}
+  .ticker-move{grid-column:1/-1;font:9px var(--mono);opacity:.9}
+  .ticker-move.up{color:#79e6a7}.ticker-move.down{color:#ff8c9b}.ticker-move.flat{color:#8b959c}
+  .ticker-cut{align-self:flex-start;margin-top:8px;color:#83b87e;font:11px var(--mono);opacity:.6}
+  @keyframes tickerLeft{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  .ecosystem-note{display:flex;align-items:center;gap:9px;color:#8b959c;font:10px var(--mono);letter-spacing:.02em;margin:-2px 0 20px}.ecosystem-note>span:not(.note-pulse){color:#536157}
+  @media(max-width:680px){
+    .hero{min-height:100svh;min-height:100dvh;padding-top:84px;padding-bottom:calc(18px + env(safe-area-inset-bottom));}
+    .hero-grid{padding-bottom:18px}
+    .price-ticker{width:calc(100% - 24px);margin:auto auto 0;min-height:72px;border-radius:5px 22px 5px 22px;box-shadow:0 18px 48px rgba(0,0,0,.32),0 0 30px rgba(56,248,32,.045)}
+    .ticker-label{width:78px;padding:9px 8px;gap:5px;font-size:7px;letter-spacing:.08em}
+    .ticker-label b{font-size:7px;padding:4px 5px}
+    .ticker-track{min-height:72px;animation-duration:105s}
+    .ticker-token{height:48px;padding:0 11px;gap:7px}
+    .ticker-token:nth-child(4n+2){transform:translateY(-3px)}
+    .ticker-token:nth-child(5n+3){transform:translateY(4px)}
+    .ticker-icon{width:25px;height:25px;border-radius:9px 4px 9px 4px}
+    .ticker-data{gap:0 7px}
+    .ticker-symbol{font-size:9px}
+    .ticker-token strong{font-size:10px}
+    .ticker-move{font-size:8px}
+    .ticker-cut{font-size:9px;margin-top:7px}
+    .hero .hero-cta{margin-bottom:6px}
+    .ecosystem-note{font-size:9px;line-height:1.6;flex-wrap:wrap}
+    .token-price-row strong{font-size:17px}
+  }
+  @media(prefers-reduced-motion:reduce){.ticker-track{animation:none;overflow-x:auto}.ticker-viewport{overflow-x:auto}}
+
   .price-ticker{position:relative;z-index:3;display:flex;align-items:stretch;min-height:66px;overflow:hidden;background:linear-gradient(100deg,#101511,#171f1a 48%,#101511);border-top:1px solid rgba(126,249,125,.22);border-bottom:1px solid rgba(126,249,125,.22);box-shadow:0 12px 34px rgba(0,0,0,.18)}
   .ticker-label{position:relative;z-index:2;display:flex;align-items:center;gap:8px;padding:0 24px 0 clamp(20px,4vw,50px);background:linear-gradient(90deg,#101511 84%,rgba(16,21,17,.9));font:10px var(--mono);letter-spacing:.12em;color:#aab6ad;white-space:nowrap}
   .ticker-label b{font-size:9px;letter-spacing:.08em;color:#131c17;background:linear-gradient(135deg,#d5ff8f,#75e8bd);padding:5px 7px;border-radius:5px}
@@ -1042,19 +1087,20 @@
      These are Solana ecosystem assets, not claims that projects launched on Mintlane. */
   const tokenLogo = (ticker, color, accent) => `<svg viewBox="0 0 48 48" role="img" aria-label="${ticker} logo" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g${ticker}" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${color}"/><stop offset="1" stop-color="${accent}"/></linearGradient></defs><rect width="48" height="48" rx="15" fill="url(#g${ticker})"/><circle cx="24" cy="24" r="15" fill="#07100d" fill-opacity=".18"/><path d="M13 27.5 20.5 13l6 10 8.5-4.5L28 35l-6-9z" fill="#fff" fill-opacity=".9"/><text x="24" y="43" text-anchor="middle" font-family="Arial,sans-serif" font-size="5.5" font-weight="700" fill="#fff" letter-spacing=".8">${ticker}</text></svg>`;
   const TOKENS = [
-    {name:"Solana",ticker:"SOL",id:"solana",slug:"solana",status:"Core asset",color:"#8b5cf6",accent:"#22d3a6",featured:true},
-    {name:"Jupiter",ticker:"JUP",id:"jupiter-exchange-solana",slug:"jupiter-exchange-solana",status:"DeFi",color:"#b8f34a",accent:"#39b5a3",featured:true},
-    {name:"Raydium",ticker:"RAY",id:"raydium",slug:"raydium",status:"DeFi",color:"#5c8dff",accent:"#a58bfa",featured:true},
-    {name:"BONK",ticker:"BONK",id:"bonk",slug:"bonk",status:"Community",color:"#ffb34d",accent:"#f47738",featured:true},
-    {name:"dogwifhat",ticker:"WIF",id:"dogwifcoin",slug:"dogwifcoin",status:"Community",color:"#f3a6c8",accent:"#a36ad8"},
-    {name:"Jito",ticker:"JTO",id:"jito-governance-token",slug:"jito-governance-token",status:"Staking",color:"#a6f0d0",accent:"#49a9a1"},
-    {name:"Pyth Network",ticker:"PYTH",id:"pyth-network",slug:"pyth-network",status:"Oracle",color:"#8c9bff",accent:"#5c61d6"},
-    {name:"Orca",ticker:"ORCA",id:"orca",slug:"orca",status:"DeFi",color:"#66e3d0",accent:"#2688a1"},
-    {name:"Render",ticker:"RENDER",id:"render-token",slug:"render-token",status:"DePIN",color:"#f2a7ff",accent:"#9c54c4"},
-    {name:"Helium",ticker:"HNT",id:"helium",slug:"helium",status:"DePIN",color:"#c4f26b",accent:"#4c9c71"},
-    {name:"Drift",ticker:"DRIFT",id:"drift-protocol",slug:"drift-protocol",status:"Trading",color:"#74b7ff",accent:"#4467c7"},
-    {name:"Marinade",ticker:"MNDE",id:"marinade",slug:"marinade",status:"Staking",color:"#f3bd6a",accent:"#d76c4a"}
-  ].map((t,i)=>({...t,image:tokenLogo(t.ticker,t.color,t.accent),url:"https://www.coingecko.com/en/coins/"+t.slug,createdAt:new Date(Date.now()-(i+1)*86400000).toISOString(),newOnMintlane:i<4,price:"—",change24h:null}));
+    {name:"Nosana",ticker:"NOS",id:"nosana",slug:"nosana",status:"AI compute"},
+    {name:"Sanctum",ticker:"CLOUD",id:"sanctum",slug:"sanctum",status:"Liquid staking"},
+    {name:"Tensor",ticker:"TNSR",id:"tensor",slug:"tensor",status:"NFT infrastructure"},
+    {name:"Meteora",ticker:"MET",id:"meteora",slug:"meteora",status:"Liquidity"},
+    {name:"Hivemapper",ticker:"HONEY",id:"hivemapper",slug:"hivemapper",status:"DePIN mapping"},
+    {name:"Shadow Token",ticker:"SHDW",id:"genesysgo-shadow",slug:"genesysgo-shadow",status:"Decentralized storage"},
+    {name:"Access Protocol",ticker:"ACS",id:"access-protocol",slug:"access-protocol",status:"Creator access"},
+    {name:"Aleph.im",ticker:"ALEPH",id:"aleph",slug:"aleph",status:"Decentralized cloud"},
+    {name:"Parcl",ticker:"PRCL",id:"parcl",slug:"parcl",status:"Real-world assets"},
+    {name:"Save",ticker:"SLND",id:"solend",slug:"solend",status:"Lending"},
+    {name:"Step Finance",ticker:"STEP",id:"step-finance",slug:"step-finance",status:"Portfolio analytics"},
+    {name:"Streamflow",ticker:"STREAM",id:"streamflow",slug:"streamflow",status:"Token operations"}
+  ].map((t,i)=>({...t,color:["#a78bfa","#9be7c4","#f7a8d8","#7dc9ff","#f2b66d","#b6f36b","#f08f8f","#88aaff","#c4a1ff","#79e5d3","#ffd477","#f2a3c7"][i],accent:["#443b91","#2f7660","#8d376b","#245b8c","#a45d25","#386f3a","#943b4a","#344c92","#6346a3","#256c67","#9a6a21","#8c3e65"][i],image:tokenLogo(t.ticker,["#a78bfa","#9be7c4","#f7a8d8","#7dc9ff","#f2b66d","#b6f36b","#f08f8f","#88aaff","#c4a1ff","#79e5d3","#ffd477","#f2a3c7"][i],["#443b91","#2f7660","#8d376b","#245b8c","#a45d25","#386f3a","#943b4a","#344c92","#6346a3","#256c67","#9a6a21","#8c3e65"][i]),url:"https://www.coingecko.com/en/coins/"+t.slug,createdAt:new Date(Date.now()-(i+1)*86400000).toISOString(),price:"—",change24h:null,logo:null}));
+  const tokenLogoMarkup = t => t.logo ? '<img src="'+esc(t.logo)+'" alt="" loading="lazy" referrerpolicy="no-referrer">' : t.image;
 
   document.querySelectorAll("[data-launch]").forEach(a => a.href = LAUNCH_URL);
   document.querySelectorAll("[data-x-placeholder]").forEach(a => a.addEventListener("click", e => e.preventDefault()));
@@ -1248,7 +1294,7 @@
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
   const tokenRows = list => list.map(t => `
     <tr class="token-row">
-      <td><div class="table-token"><span class="table-logo">${t.image}</span><span class="table-token-copy"><strong>${esc(t.name)}</strong><small>${esc(t.ticker)} <i>· SOLANA</i></small></span>${t.newOnMintlane?'<span class="token-new">NEW</span>':''}</div></td>
+      <td><div class="table-token"><span class="table-logo">${tokenLogoMarkup(t)}</span><span class="table-token-copy"><strong>${esc(t.name)}</strong><small>${esc(t.ticker)} <i>· SOLANA</i></small></span>${t.newOnMintlane?'<span class="token-new">NEW</span>':''}</div></td>
       <td class="table-price" data-price-id="${esc(t.id)}">${esc(t.price)}</td>
       <td><span class="token-change flat" data-change-id="${esc(t.id)}">—</span></td>
       <td><span class="table-category">${esc(t.status)}</span></td>
@@ -1281,7 +1327,7 @@
   q.addEventListener("input",render);
   render();
 
-  /* Live price tape + token card prices. */
+  /* Live quotes and original project logos from CoinGecko. */
   const priceIds = TOKENS.map(t=>t.id).join(",");
   const ticker = document.getElementById("priceTicker");
   const money = n => {
@@ -1292,30 +1338,34 @@
     if (n >= .0001) return "$"+n.toFixed(6);
     return "$"+n.toPrecision(3);
   };
-  function paintPrices(data) {
+  function paintPrices(coins) {
+    const byId = Object.fromEntries(coins.map(coin=>[coin.id,coin]));
     TOKENS.forEach(t=>{
-      const quote=data[t.id];
-      if (!quote || typeof quote.usd!=="number") return;
-      t.price=money(quote.usd);
-      t.change24h=typeof quote.usd_24h_change==="number"?quote.usd_24h_change:null;
+      const quote=byId[t.id];
+      if (!quote) return;
+      if (typeof quote.current_price==="number") t.price=money(quote.current_price);
+      if (typeof quote.price_change_percentage_24h==="number") t.change24h=quote.price_change_percentage_24h;
+      if (quote.image) t.logo=quote.image;
       document.querySelectorAll('[data-price-id="'+t.id+'"]').forEach(el=>el.textContent=t.price);
       document.querySelectorAll('[data-change-id="'+t.id+'"]').forEach(el=>{
         el.textContent=t.change24h===null?"24H —":(t.change24h>=0?"+":"")+t.change24h.toFixed(2)+"%";
         el.classList.toggle("up",t.change24h>=0);el.classList.toggle("down",t.change24h<0);el.classList.remove("flat");
       });
     });
-    ticker.innerHTML=[...TOKENS,...TOKENS].map(t=>'<div class="ticker-token"><span class="ticker-icon">'+t.image+'</span><span class="ticker-symbol">'+esc(t.ticker)+'</span><strong>'+esc(t.price)+'</strong><span class="ticker-move '+(t.change24h===null?'flat':t.change24h>=0?'up':'down')+'">'+(t.change24h===null?'—':(t.change24h>=0?'+':'')+t.change24h.toFixed(2)+'%')+'</span></div>').join("");
+    ticker.innerHTML=[...TOKENS,...TOKENS].map((t,i)=>'<div class="ticker-token token-offset-'+(i%6)+'"><span class="ticker-icon">'+tokenLogoMarkup(t)+'</span><span class="ticker-data"><span class="ticker-symbol">'+esc(t.ticker)+'</span><strong>'+esc(t.price)+'</strong><span class="ticker-move '+(t.change24h===null?'flat':t.change24h>=0?'up':'down')+'">'+(t.change24h===null?'24H —':(t.change24h>=0?'+':'')+t.change24h.toFixed(2)+'%')+'</span></span><span class="ticker-cut" aria-hidden="true">↗</span></div>').join("");
   }
   async function refreshTokenPrices() {
     try {
-      const response=await fetch("https://api.coingecko.com/api/v3/simple/price?ids="+encodeURIComponent(priceIds)+"&vs_currencies=usd&include_24hr_change=true",{headers:{accept:"application/json"}});
+      const response=await fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids="+encodeURIComponent(priceIds)+"&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=24h",{headers:{accept:"application/json"}});
       if(!response.ok) throw new Error("Price feed unavailable");
-      paintPrices(await response.json());
+      const coins=await response.json();
+      if(!Array.isArray(coins)) throw new Error("Unexpected market response");
+      paintPrices(coins);
+      render();
     } catch (err) {
-      ticker.innerHTML=[...TOKENS,...TOKENS].map(t=>'<div class="ticker-token"><span class="ticker-icon">'+t.image+'</span><span class="ticker-symbol">'+esc(t.ticker)+'</span><strong>Price unavailable</strong></div>').join("");
+      ticker.innerHTML=[...TOKENS,...TOKENS].map((t,i)=>'<div class="ticker-token token-offset-'+(i%6)+'"><span class="ticker-icon">'+tokenLogoMarkup(t)+'</span><span class="ticker-data"><span class="ticker-symbol">'+esc(t.ticker)+'</span><strong>'+esc(t.price)+'</strong><span class="ticker-move flat">Feed reconnecting</span></span><span class="ticker-cut" aria-hidden="true">↗</span></div>').join("");
     }
-  }
-  void refreshTokenPrices();
+  }  void refreshTokenPrices();
   window.setInterval(refreshTokenPrices,60000);
   q.addEventListener("input", render);
   document.querySelectorAll(".chip").forEach(c => c.addEventListener("click", () => {
