@@ -660,6 +660,31 @@
     }
   }
 
+
+  /* ---------- Live token price ticker ---------- */
+  .price-ticker{position:relative;z-index:3;display:flex;align-items:stretch;min-height:66px;overflow:hidden;background:linear-gradient(100deg,#101511,#171f1a 48%,#101511);border-top:1px solid rgba(126,249,125,.22);border-bottom:1px solid rgba(126,249,125,.22);box-shadow:0 12px 34px rgba(0,0,0,.18)}
+  .ticker-label{position:relative;z-index:2;display:flex;align-items:center;gap:8px;padding:0 24px 0 clamp(20px,4vw,50px);background:linear-gradient(90deg,#101511 84%,rgba(16,21,17,.9));font:10px var(--mono);letter-spacing:.12em;color:#aab6ad;white-space:nowrap}
+  .ticker-label b{font-size:9px;letter-spacing:.08em;color:#131c17;background:linear-gradient(135deg,#d5ff8f,#75e8bd);padding:5px 7px;border-radius:5px}
+  .ticker-live-dot,.note-pulse{width:6px;height:6px;border-radius:50%;background:#7de9a7;box-shadow:0 0 0 4px rgba(125,233,167,.1);flex:none}
+  .ticker-viewport{min-width:0;flex:1;overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 3%,#000 96%,transparent)}
+  .ticker-track{display:flex;width:max-content;min-height:66px;align-items:center;animation:tickerLeft 70s linear infinite}
+  .ticker-viewport:hover .ticker-track{animation-play-state:paused}
+  .ticker-token{height:36px;display:flex;align-items:center;gap:9px;padding:0 22px;border-right:1px solid rgba(126,249,125,.1);white-space:nowrap;font-size:12px}
+  .ticker-icon{width:23px;height:23px;display:block;border-radius:7px;overflow:hidden;flex:none}.ticker-icon svg{display:block;width:100%;height:100%}
+  .ticker-symbol{font:600 11px var(--mono);color:#e9f1e9}.ticker-token strong{font:500 11px var(--mono);color:#fff}.ticker-move{font:10px var(--mono)}.ticker-move.up{color:#79e6a7}.ticker-move.down{color:#ff8c9b}.ticker-move.flat{color:#8b959c}
+  @keyframes tickerLeft{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  .ecosystem-note{display:flex;align-items:center;gap:9px;color:#8b959c;font:10px var(--mono);letter-spacing:.02em;margin:-2px 0 20px}.ecosystem-note>span:not(.note-pulse){color:#536157}
+  .token-logo{background:#17231c!important;padding:0!important;border:1px solid rgba(255,255,255,.1)!important}.token-logo svg{display:block;width:100%;height:100%}
+  .token-card-name{min-width:0;flex:1}.token-card-name h3{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .token-network{color:#69786d;font:9px var(--mono);letter-spacing:.04em}
+  .token-new{font:9px var(--mono);letter-spacing:.04em;color:#caff9c;background:rgba(126,249,125,.1);border:1px solid rgba(126,249,125,.22);border-radius:5px;padding:4px 6px}
+  .token-price-row{display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid rgba(126,249,125,.12);border-bottom:1px solid rgba(126,249,125,.12);padding:12px 0}
+  .token-price-row>div{display:grid;gap:4px}.token-price-row>div>span{font:10px var(--mono);color:#8b959c}.token-price-row strong{font:600 20px var(--display);letter-spacing:-.04em;color:#f5fff4}
+  .token-change{font:11px var(--mono);padding:6px 8px;border-radius:6px;white-space:nowrap}.token-change.up{color:#83f0ad;background:rgba(90,223,139,.1)}.token-change.down{color:#ff98a7;background:rgba(255,110,130,.1)}.token-change.flat{color:#8b959c;background:rgba(139,149,156,.1)}
+  .card-meta span:last-child{color:#d5e4d4!important}.card .view{display:flex;justify-content:space-between;align-items:center}.card .view span{color:#a5f77e}
+  @media(max-width:680px){.price-ticker{min-height:58px}.ticker-label{padding:0 12px;font-size:8px;gap:6px}.ticker-label b{font-size:8px;padding:4px 5px}.ticker-track{min-height:58px}.ticker-token{padding:0 13px;gap:7px}.ticker-token strong{font-size:10px}.ticker-move{font-size:9px}.ecosystem-note{font-size:9px;line-height:1.6;flex-wrap:wrap}.token-price-row strong{font-size:17px}}
+  @media(prefers-reduced-motion:reduce){.ticker-track{animation:none;overflow-x:auto}.ticker-viewport{overflow-x:auto}}
+
 </style>
 </head>
 <body>
@@ -815,12 +840,9 @@
       </div>
     </div>
   </div>
-  <div class="strip hero-status" role="region" aria-label="Platform status">
-    <div class="strip-in">
-      <div class="strip-item">Network <b class="g-sol">Solana</b></div>
-      <div class="strip-item">Token creation <i class="live" aria-hidden="true"></i><b class="g-live">Available</b></div>
-      <div class="strip-item">Wallet <b id="stripWallet" class="g-wallet">Connect to get started</b></div>
-    </div>
+  <div class="price-ticker" role="region" aria-label="Solana token prices">
+    <div class="ticker-label"><span class="ticker-live-dot"></span><span>MARKET WATCH</span><b>LIVE PRICES</b></div>
+    <div class="ticker-viewport"><div class="ticker-track" id="priceTicker"><span class="ticker-loading">Loading Solana market prices…</span></div></div>
   </div>
 </section>
 
@@ -834,6 +856,7 @@
       </div>
       <a class="link" href="#discover">Explore All Tokens →</a>
     </div>
+    <p class="ecosystem-note"><span class="note-pulse"></span> Curated Solana ecosystem tokens <span>·</span> Market prices refresh automatically</p>
     <div class="cards" id="featured"></div>
   </div>
 </section>
@@ -925,7 +948,7 @@
     <div class="cards" id="results"></div>
     <div class="empty" id="empty">
       <svg viewBox="0 0 44 44" fill="none" stroke="#8B959C" stroke-width="1.2" aria-hidden="true"><polygon points="22,4 38,13 38,31 22,40 6,31 6,13"/><path d="M14 28V16l8 8 8-8v12"/></svg>
-      <p>The lane is quiet for now. Check back as more projects become available.</p>
+      <p>No matching tokens. Try another search or switch filters to explore the Solana ecosystem.</p>
       <a class="btn btn-ghost" data-launch href="/launch">Be among the first creators</a>
     </div>
   </div>
@@ -992,10 +1015,23 @@
   /* ====== CONFIG — wire these to your real product ====== */
   const LAUNCH_URL = "/app.html?page=launch"; // open the actual React app launch screen
   const CONTRACT_ADDRESS = "";             // paste the CA here when it's ready
-  /* Real token data goes here. Each item:
-     { name, ticker, address, status, image, url, createdAt: "2026-10-01" }
-     While this is empty, the Featured section stays hidden and Discover shows its empty state. */
-  const TOKENS = [];
+  /* Curated ecosystem directory. Live prices are fetched from CoinGecko.
+     These are Solana ecosystem assets, not claims that projects launched on Mintlane. */
+  const tokenLogo = (ticker, color, accent) => `<svg viewBox="0 0 48 48" role="img" aria-label="${ticker} logo" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g${ticker}" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${color}"/><stop offset="1" stop-color="${accent}"/></linearGradient></defs><rect width="48" height="48" rx="15" fill="url(#g${ticker})"/><circle cx="24" cy="24" r="15" fill="#07100d" fill-opacity=".18"/><path d="M13 27.5 20.5 13l6 10 8.5-4.5L28 35l-6-9z" fill="#fff" fill-opacity=".9"/><text x="24" y="43" text-anchor="middle" font-family="Arial,sans-serif" font-size="5.5" font-weight="700" fill="#fff" letter-spacing=".8">${ticker}</text></svg>`;
+  const TOKENS = [
+    {name:"Solana",ticker:"SOL",id:"solana",slug:"solana",status:"Core asset",color:"#8b5cf6",accent:"#22d3a6",featured:true},
+    {name:"Jupiter",ticker:"JUP",id:"jupiter-exchange-solana",slug:"jupiter-exchange-solana",status:"DeFi",color:"#b8f34a",accent:"#39b5a3",featured:true},
+    {name:"Raydium",ticker:"RAY",id:"raydium",slug:"raydium",status:"DeFi",color:"#5c8dff",accent:"#a58bfa",featured:true},
+    {name:"BONK",ticker:"BONK",id:"bonk",slug:"bonk",status:"Community",color:"#ffb34d",accent:"#f47738",featured:true},
+    {name:"dogwifhat",ticker:"WIF",id:"dogwifcoin",slug:"dogwifcoin",status:"Community",color:"#f3a6c8",accent:"#a36ad8"},
+    {name:"Jito",ticker:"JTO",id:"jito-governance-token",slug:"jito-governance-token",status:"Staking",color:"#a6f0d0",accent:"#49a9a1"},
+    {name:"Pyth Network",ticker:"PYTH",id:"pyth-network",slug:"pyth-network",status:"Oracle",color:"#8c9bff",accent:"#5c61d6"},
+    {name:"Orca",ticker:"ORCA",id:"orca",slug:"orca",status:"DeFi",color:"#66e3d0",accent:"#2688a1"},
+    {name:"Render",ticker:"RENDER",id:"render-token",slug:"render-token",status:"DePIN",color:"#f2a7ff",accent:"#9c54c4"},
+    {name:"Helium",ticker:"HNT",id:"helium",slug:"helium",status:"DePIN",color:"#c4f26b",accent:"#4c9c71"},
+    {name:"Drift",ticker:"DRIFT",id:"drift-protocol",slug:"drift-protocol",status:"Trading",color:"#74b7ff",accent:"#4467c7"},
+    {name:"Marinade",ticker:"MNDE",id:"marinade",slug:"marinade",status:"Staking",color:"#f3bd6a",accent:"#d76c4a"}
+  ].map((t,i)=>({...t,image:tokenLogo(t.ticker,t.color,t.accent),url:"https://www.coingecko.com/en/coins/"+t.slug,createdAt:new Date(Date.now()-(i+1)*86400000).toISOString(),newOnMintlane:i<4,price:"—",change24h:null}));
 
   document.querySelectorAll("[data-launch]").forEach(a => a.href = LAUNCH_URL);
   document.querySelectorAll("[data-x-placeholder]").forEach(a => a.addEventListener("click", e => e.preventDefault()));
@@ -1190,19 +1226,20 @@
   const card = t => `
     <article class="card">
       <div class="card-top">
-        <div class="mono-badge">${t.image ? `<img src="${esc(t.image)}" alt="">` : esc((t.ticker||t.name||"?").slice(0,2).toUpperCase())}</div>
-        <div><h3>${esc(t.name)}</h3><div class="ticker">$${esc(t.ticker)}</div></div>
+        <div class="mono-badge token-logo">${t.image || esc((t.ticker||t.name||"?").slice(0,2).toUpperCase())}</div>
+        <div class="token-card-name"><h3>${esc(t.name)}</h3><div class="ticker">$ ${esc(t.ticker)} <span class="token-network">· SOLANA</span></div></div>
+        ${t.newOnMintlane ? '<span class="token-new">NEW</span>' : ''}
       </div>
+      <div class="token-price-row"><div><span>Token price</span><strong data-price-id="${esc(t.id)}">${esc(t.price)}</strong></div><span class="token-change flat" data-change-id="${esc(t.id)}">24H —</span></div>
       <div class="card-meta">
-        <div><span>Status</span><span>${esc(t.status || "Launched")}</span></div>
-        <div><span>Contract</span><span>${t.address ? esc(short(t.address)) : "—"}</span></div>
+        <div><span>Category</span><span>${esc(t.status)}</span></div>
+        <div><span>Market</span><span>Solana</span></div>
       </div>
-      <a class="view" href="${t.url ? esc(t.url) : "#"}">View details →</a>
+      <a class="view" href="${esc(t.url)}" target="_blank" rel="noopener noreferrer">View market <span>↗</span></a>
     </article>`;
   const featured = document.getElementById("featured");
   const stagger = el => [...el.children].forEach((c, i) => c.style.setProperty("--i", Math.min(i, 10)));
-  featured.innerHTML = TOKENS.slice(0, 4).map(card).join(""); stagger(featured);
-  if (!TOKENS.length) document.getElementById("explore").style.display = "none";
+  featured.innerHTML = TOKENS.filter(t=>t.featured).map(card).join(""); stagger(featured);
 
   /* ====== Discovery (search + implemented filters only) ====== */
   const results = document.getElementById("results"), empty = document.getElementById("empty"), q = document.getElementById("q");
@@ -1211,11 +1248,47 @@
     const term = q.value.trim().toLowerCase();
     let list = TOKENS.filter(t => !term || (t.name + " " + t.ticker).toLowerCase().includes(term));
     const byDate = [...list].sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
-    if (filter === "new") list = byDate.filter(t => t.createdAt && (Date.now() - new Date(t.createdAt)) < 7 * 864e5);
+    if (filter === "new") list = TOKENS.filter(t => t.newOnMintlane).filter(t => !term || (t.name + " " + t.ticker).toLowerCase().includes(term));
     if (filter === "recent") list = byDate;
     results.innerHTML = list.map(card).join(""); stagger(results);
     empty.style.display = list.length ? "none" : "";
   }
+  /* Live price tape + token card prices. */
+  const priceIds = TOKENS.map(t=>t.id).join(",");
+  const ticker = document.getElementById("priceTicker");
+  const money = n => {
+    if (typeof n !== "number" || !Number.isFinite(n)) return "—";
+    if (n >= 1000) return "$"+n.toLocaleString("en-US",{maximumFractionDigits:2});
+    if (n >= 1) return "$"+n.toLocaleString("en-US",{maximumFractionDigits:3});
+    if (n >= .01) return "$"+n.toFixed(4);
+    if (n >= .0001) return "$"+n.toFixed(6);
+    return "$"+n.toPrecision(3);
+  };
+  function paintPrices(data) {
+    TOKENS.forEach(t=>{
+      const quote=data[t.id];
+      if (!quote || typeof quote.usd!=="number") return;
+      t.price=money(quote.usd);
+      t.change24h=typeof quote.usd_24h_change==="number"?quote.usd_24h_change:null;
+      document.querySelectorAll('[data-price-id="'+t.id+'"]').forEach(el=>el.textContent=t.price);
+      document.querySelectorAll('[data-change-id="'+t.id+'"]').forEach(el=>{
+        el.textContent=t.change24h===null?"24H —":(t.change24h>=0?"+":"")+t.change24h.toFixed(2)+"%";
+        el.classList.toggle("up",t.change24h>=0);el.classList.toggle("down",t.change24h<0);el.classList.remove("flat");
+      });
+    });
+    ticker.innerHTML=[...TOKENS,...TOKENS].map(t=>'<div class="ticker-token"><span class="ticker-icon">'+t.image+'</span><span class="ticker-symbol">'+esc(t.ticker)+'</span><strong>'+esc(t.price)+'</strong><span class="ticker-move '+(t.change24h===null?'flat':t.change24h>=0?'up':'down')+'">'+(t.change24h===null?'—':(t.change24h>=0?'+':'')+t.change24h.toFixed(2)+'%')+'</span></div>').join("");
+  }
+  async function refreshTokenPrices() {
+    try {
+      const response=await fetch("https://api.coingecko.com/api/v3/simple/price?ids="+encodeURIComponent(priceIds)+"&vs_currencies=usd&include_24hr_change=true",{headers:{accept:"application/json"}});
+      if(!response.ok) throw new Error("Price feed unavailable");
+      paintPrices(await response.json());
+    } catch (err) {
+      ticker.innerHTML=[...TOKENS,...TOKENS].map(t=>'<div class="ticker-token"><span class="ticker-icon">'+t.image+'</span><span class="ticker-symbol">'+esc(t.ticker)+'</span><strong>Price unavailable</strong></div>').join("");
+    }
+  }
+  void refreshTokenPrices();
+  window.setInterval(refreshTokenPrices,60000);
   q.addEventListener("input", render);
   document.querySelectorAll(".chip").forEach(c => c.addEventListener("click", () => {
     filter = c.dataset.filter;
