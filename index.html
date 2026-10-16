@@ -49,7 +49,7 @@
   .btn-sm { height: 40px; padding: 0 18px; font-size: 13.5px; }
   .wallet { background: #1e1e23; border: 1px solid var(--border-strong); color: #f5f2f0; border-radius: 11px; height: 40px; padding: 0 16px; font-weight: 500; font-size: 13.5px; display: inline-flex; align-items: center; gap: 9px; transition: border-color .2s, background .2s, box-shadow .2s; }
   .wallet:hover { border-color: var(--metal); box-shadow: 0 0 0 3px rgba(255, 244, 163,.08); }
-  .wallet .dot { width: 7px; height: 7px; border-radius: 50%; background: #8FCFAE; display: none; box-shadow: 0 0 0 3px rgba(143,207,174,.15); }
+  .wallet .dot { width: 7px; height: 7px; border-radius: 50%; background: #d8c17a; display: none; box-shadow: 0 0 0 3px rgba(143,207,174,.15); }
   .wallet.connected .dot { display: inline-block; }
   .wallet.connected { font-family: var(--mono); font-size: 12.5px; }
 
@@ -73,7 +73,7 @@
   .eyebrow::before { content: ""; width: 34px; height: 1px; background: var(--silver); opacity: .7; }
   h1 { font-family: var(--display); font-weight: 500; font-size: clamp(36px, 5.6vw, 76px); line-height: 1.08; letter-spacing: -.035em; }
   h1 .l2 { color: transparent; -webkit-text-stroke: 1px rgba(255, 244, 163,.85); }
-  .hero p.lead { margin-top: 28px; max-width: 460px; color: #A7B1B8; font-size: 17px; line-height: 1.65; }
+  .hero p.lead { margin-top: 28px; max-width: 460px; color: #c4c0c1; font-size: 17px; line-height: 1.65; }
   .hero-cta { margin-top: 38px; display: flex; flex-wrap: wrap; gap: 12px; }
   @media (prefers-reduced-motion: no-preference) {
     .hero h1, .hero .eyebrow, .hero p.lead, .hero-cta { animation: rise .9s cubic-bezier(.2,.7,.2,1) both; }
@@ -115,7 +115,7 @@
   }
 
   /* ---------- Launch pill (primary) ---------- */
-  .launch { position: relative; display: inline-flex; align-items: center; gap: 14px; height: 44px; padding: 0 6px 0 20px; border-radius: 999px; border: 1px solid rgba(255, 244, 163,.6); background: linear-gradient(180deg, #F2F6F9, #B9C5CE); color: #37373f; font-weight: 600; font-size: 14px; letter-spacing: .005em; white-space: nowrap; overflow: hidden; align-self: center; box-shadow: inset 0 1px 0 rgba(255,255,255,.75), 0 10px 28px -12px rgba(255, 244, 163,.4); transition: box-shadow .3s, transform .2s, filter .3s; }
+  .launch { position: relative; display: inline-flex; align-items: center; gap: 14px; height: 44px; padding: 0 6px 0 20px; border-radius: 999px; border: 1px solid rgba(255, 244, 163,.6); background: linear-gradient(180deg, #f5f2f0, #c4c0c1); color: #37373f; font-weight: 600; font-size: 14px; letter-spacing: .005em; white-space: nowrap; overflow: hidden; align-self: center; box-shadow: inset 0 1px 0 rgba(255,255,255,.75), 0 10px 28px -12px rgba(255, 244, 163,.4); transition: box-shadow .3s, transform .2s, filter .3s; }
   .launch::before { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, transparent 35%, rgba(255,255,255,.7) 50%, transparent 65%); transform: translateX(-120%); pointer-events: none; }
   .launch:hover { box-shadow: inset 0 1px 0 rgba(255,255,255,.85), 0 0 0 4px rgba(255, 244, 163,.08), 0 14px 32px -12px rgba(255, 244, 163,.5); }
   .launch:hover::before { transform: translateX(120%); transition: transform .9s cubic-bezier(.2,.7,.2,1); }
@@ -133,8 +133,8 @@
   .ca:hover { border-color: var(--metal); box-shadow: 0 0 0 4px rgba(255, 244, 163,.06), 0 10px 28px -10px rgba(0,0,0,.7); }
   .ca:hover::before { transform: translateX(120%); transition: transform .9s cubic-bezier(.2,.7,.2,1); }
   .ca:active { transform: scale(.98); }
-  .ca-tag { height: 30px; padding: 0 12px; border-radius: 999px; display: grid; place-items: center; font-weight: 500; font-size: 11px; letter-spacing: .08em; color: #37373f; background: linear-gradient(145deg, #f5f2f0, #98A4AC); transition: background .35s; }
-  .ca-val { min-width: 9ch; max-width: 210px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #B5C0C7; }
+  .ca-tag { height: 30px; padding: 0 12px; border-radius: 999px; display: grid; place-items: center; font-weight: 500; font-size: 11px; letter-spacing: .08em; color: #37373f; background: linear-gradient(145deg, #f5f2f0, #77747a); transition: background .35s; }
+  .ca-val { min-width: 9ch; max-width: 210px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #c4c0c1; }
   .ca-ic { position: relative; width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50%; color: var(--muted); transition: color .2s, background .2s; }
   .ca-ic svg { position: absolute; width: 15px; height: 15px; transition: opacity .25s, transform .4s cubic-bezier(.2,.7,.2,1); }
   .ca-ic .ck { opacity: 0; transform: scale(.4) rotate(-25deg); }
@@ -234,7 +234,7 @@
   .step::after { content: ""; position: absolute; width: 100px; height: 100px; top: -54px; right: -38px; border-radius: 50%; background: rgba(88,111,114,.12); filter: blur(10px); pointer-events: none; }
   .step:hover { transform: translateY(-5px); border-color: #77747a; box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 24px 56px rgba(0,0,0,.32), 0 0 0 4px rgba(88,111,114,.06); }
   .step svg { position: relative; inset: auto; width: 29px; height: 29px; margin-bottom: 12px; color: #c4c0c1; z-index: 1; }
-  .step .num { font-family: var(--mono); font-size: 10px; letter-spacing: 1.8px; font-weight: 500; line-height: 1; color: #819596; z-index: 1; }
+  .step .num { font-family: var(--mono); font-size: 10px; letter-spacing: 1.8px; font-weight: 500; line-height: 1; color: #77747a; z-index: 1; }
   .step h3 { margin: 13px 0 0; font-size: clamp(17px, 1.7vw, 20px); font-weight: 600; z-index: 1; }
   .step p { max-width: 220px; margin: 9px 0 0; color: var(--muted); font-size: clamp(11px, 1.1vw, 13px); line-height: 1.65; z-index: 1; }
 
@@ -597,7 +597,7 @@
     background:
       radial-gradient(70% 30% at 60% 0%, rgba(255, 244, 163,.18), transparent 70%),
       radial-gradient(45% 45% at 78% 92%, rgba(104,173,108,.22), transparent 70%),
-      linear-gradient(100deg, #77747a 0%, #191C1A 55%, #37373f 100%);
+      linear-gradient(100deg, #77747a 0%, #1e1e23 55%, #37373f 100%);
   }
   .hero::before {
     background:
@@ -694,7 +694,7 @@
   .ticker-token strong{font:500 11px var(--mono);color:#f5f2f0}
   .ticker-move{grid-column:1/-1;font:9px var(--mono);opacity:.9}
   .ticker-move.up{color:#fff4a3}.ticker-move.down{color:#77747a}.ticker-move.flat{color:#77747a}
-  .ticker-cut{align-self:flex-start;margin-top:8px;color:#83b87e;font:11px var(--mono);opacity:.6}
+  .ticker-cut{align-self:flex-start;margin-top:8px;color:#d8c17a;font:11px var(--mono);opacity:.6}
   @keyframes tickerLeft{from{transform:translateX(0)}to{transform:translateX(-50%)}}
   .ecosystem-note{display:flex;align-items:center;gap:9px;color:#77747a;font:10px var(--mono);letter-spacing:.02em;margin:-2px 0 20px}.ecosystem-note>span:not(.note-pulse){color:#77747a}
   @media(max-width:680px){
@@ -752,8 +752,8 @@
   .token-table td{padding:13px 18px;border-bottom:1px solid rgba(255,255,255,.045);font-size:12px;color:#c4c0c1;white-space:nowrap}
   .token-table tbody tr:last-child td{border-bottom:0}.token-table tbody tr{transition:background .18s ease}.token-table tbody tr:hover{background:rgba(255, 244, 163,.045)}
   .table-token{display:flex;align-items:center;gap:11px;min-width:190px}.table-logo{width:36px;height:36px;display:block;flex:none;overflow:hidden;border-radius:11px;border:1px solid rgba(255,255,255,.09)}.table-logo svg,.table-logo img{width:100%;height:100%;display:block;object-fit:cover}
-  .table-token-copy{display:grid;gap:4px}.table-token-copy strong{font-size:12px;font-weight:600;color:#f5f2f0}.table-token-copy small{font:10px var(--mono);color:#7f8e83}.table-token-copy small i{font-style:normal;color:#77747a;font-size:9px}
-  .table-price{font:500 12px var(--mono);color:#f5f2f0!important}.table-category{display:inline-flex;border:1px solid rgba(255, 244, 163,.12);background:rgba(255, 244, 163,.045);padding:5px 8px;border-radius:6px;color:#aab7ad;font-size:10px}
+  .table-token-copy{display:grid;gap:4px}.table-token-copy strong{font-size:12px;font-weight:600;color:#f5f2f0}.table-token-copy small{font:10px var(--mono);color:#77747a}.table-token-copy small i{font-style:normal;color:#77747a;font-size:9px}
+  .table-price{font:500 12px var(--mono);color:#f5f2f0!important}.table-category{display:inline-flex;border:1px solid rgba(255, 244, 163,.12);background:rgba(255, 244, 163,.045);padding:5px 8px;border-radius:6px;color:#c4c0c1;font-size:10px}
   .table-market-link{display:inline-flex;gap:8px;align-items:center;color:#fff4a3;font-size:11px;text-decoration:none;white-space:nowrap}.table-market-link:hover{color:#f5f2f0}.table-market-link span{font-size:13px}
   .token-table .token-change{display:inline-flex;align-items:center;padding:6px 8px;border-radius:6px;font:10px var(--mono)}.token-table .token-change.up{color:#fff4a3;background:rgba(90,223,139,.1)}.token-table .token-change.down{color:#77747a;background:rgba(255,110,130,.1)}.token-table .token-change.flat{color:#77747a;background:rgba(139,149,156,.1)}
   .token-empty{margin-top:12px}.token-empty[hidden],.token-table-wrap[hidden]{display:none}
@@ -1110,7 +1110,7 @@
     {name:"Save",ticker:"SLND",id:"solend",slug:"solend",status:"Lending"},
     {name:"Step Finance",ticker:"STEP",id:"step-finance",slug:"step-finance",status:"Portfolio analytics"},
     {name:"Streamflow",ticker:"STREAM",id:"streamflow",slug:"streamflow",status:"Token operations"}
-  ].map((t,i)=>({...t,color:["#d8c17a","#d8c17a","#d8c17a","#c4c0c1","#d8c17a","#fff4a3","#77747a","#c4c0c1","#d8c17a","#fff4a3","#d8c17a","#d8c17a"][i],accent:["#4a4a53","#77747a","#8d376b","#77747a","#a45d25","#77747a","#943b4a","#77747a","#4a4a53","#77747a","#9a6a21","#8c3e65"][i],image:tokenLogo(t.ticker,["#d8c17a","#d8c17a","#d8c17a","#c4c0c1","#d8c17a","#fff4a3","#77747a","#c4c0c1","#d8c17a","#fff4a3","#d8c17a","#d8c17a"][i],["#4a4a53","#77747a","#8d376b","#77747a","#a45d25","#77747a","#943b4a","#77747a","#4a4a53","#77747a","#9a6a21","#8c3e65"][i]),url:"https://www.coingecko.com/en/coins/"+t.slug,createdAt:new Date(Date.now()-(i+1)*86400000).toISOString(),price:"—",change24h:null,logo:null}));
+  ].map((t,i)=>({...t,color:["#d8c17a","#d8c17a","#d8c17a","#c4c0c1","#d8c17a","#fff4a3","#77747a","#c4c0c1","#d8c17a","#fff4a3","#d8c17a","#d8c17a"][i],accent:["#4a4a53","#77747a","#d8c17a","#77747a","#d8c17a","#77747a","#77747a","#77747a","#4a4a53","#77747a","#d8c17a","#d8c17a"][i],image:tokenLogo(t.ticker,["#d8c17a","#d8c17a","#d8c17a","#c4c0c1","#d8c17a","#fff4a3","#77747a","#c4c0c1","#d8c17a","#fff4a3","#d8c17a","#d8c17a"][i],["#4a4a53","#77747a","#d8c17a","#77747a","#d8c17a","#77747a","#77747a","#77747a","#4a4a53","#77747a","#d8c17a","#d8c17a"][i]),url:"https://www.coingecko.com/en/coins/"+t.slug,createdAt:new Date(Date.now()-(i+1)*86400000).toISOString(),price:"—",change24h:null,logo:null}));
   const tokenLogoMarkup = t => t.logo ? '<img src="'+esc(t.logo)+'" alt="" loading="lazy" referrerpolicy="no-referrer">' : t.image;
 
   document.querySelectorAll("[data-launch]").forEach(a => a.href = LAUNCH_URL);
