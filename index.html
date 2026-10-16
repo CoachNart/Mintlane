@@ -1129,99 +1129,60 @@
       precision highp float;
       uniform vec2 uRes; uniform float uTime; uniform vec2 uMouse;
 
-      float hash(vec3 p){ p=fract(p*.3183099+.1); p*=17.; return fract(p.x*p.y*p.z*(p.x+p.y+p.z)); }
-      float noise(vec3 p){
-        vec3 i=floor(p), f=fract(p); f=f*f*(3.-2.*f);
-        return mix(mix(mix(hash(i),hash(i+vec3(1.,0.,0.)),f.x),mix(hash(i+vec3(0.,1.,0.)),hash(i+vec3(1.,1.,0.)),f.x),f.y),
-                   mix(mix(hash(i+vec3(0.,0.,1.)),hash(i+vec3(1.,0.,1.)),f.x),mix(hash(i+vec3(0.,1.,1.)),hash(i+vec3(1.,1.,1.)),f.x),f.y),f.z);
+      float hash(vec2 p){ p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
+      float noise(vec2 p){
+        vec2 i = floor(p), f = fract(p); f = f * f * (3. - 2. * f);
+        return mix(mix(hash(i), hash(i + vec2(1., 0.)), f.x), mix(hash(i + vec2(0., 1.)), hash(i + vec2(1., 1.)), f.x), f.y);
       }
-      float fbm(vec3 p){
-        float v=0., a=.5;
-        for(int i=0;i<3;i++){v+=a*noise(p);p=p*2.02+vec3(7.1,3.7,5.3);a*=.5;}
+      float fbm(vec2 p){
+        float v = 0., a = .5; mat2 m = mat2(1.6, 1.2, -1.2, 1.6);
+        for (int i = 0; i < 4; i++){ v += a * noise(p); p = m * p; a *= .5; }
         return v;
       }
-      vec3 rotX(vec3 p,float a){float c=cos(a),s=sin(a);return vec3(p.x,c*p.y-s*p.z,s*p.y+c*p.z);}
-      vec3 rotY(vec3 p,float a){float c=cos(a),s=sin(a);return vec3(c*p.x+s*p.z,p.y,-s*p.x+c*p.z);}
-      vec3 rotZ(vec3 p,float a){float c=cos(a),s=sin(a);return vec3(c*p.x-s*p.y,s*p.x+c*p.y,p.z);}
-      float torus(vec3 p,vec2 t){return length(vec2(length(p.xz)-t.x,p.y))-t.y;}
-      float sdOcta(vec3 p,float s){p=abs(p);return (p.x+p.y+p.z-s)*.57735027;}
-      float smoothMin(float a,float b,float k){float h=max(k-abs(a-b),0.)/k;return min(a,b)-h*h*k*.25;}
-      float matter(vec3 p){
-        float t=uTime*.17;
-        vec3 a=rotY(rotX(p,t*.7),.42+sin(t*.65)*.13);
-        vec3 b=rotX(rotZ(p,-.68+sin(t*.5)*.12),t*.42);
-        vec3 c=rotZ(rotY(p,.95+t*.32),-.55+cos(t*.6)*.14);
-        a+=vec3(0.,sin(t+p.x*2.)*.035,0.);
-        b+=vec3(cos(t*.8+p.z*2.)*.025,0.,0.);
-        float r1=torus(a,vec2(.57,.105+sin(t+p.x*2.)*.012));
-        float r2=torus(b,vec2(.48,.075));
-        float r3=torus(c,vec2(.40,.065));
-        float core=length(p*vec3(1.,.91,1.08))-(.31+.045*sin(p.x*5.+p.y*4.+t));
-        float d=smoothMin(smoothMin(r1,r2,.16),r3,.14);
-        d=smoothMin(d,core,.13);
-        float warp=(fbm(p*3.4+vec3(0.,t*.22,0.))-.5)*.075;
-        return d+warp;
-      }
-      float scene(vec3 p){
-        float d=matter(p);
-        float t=uTime*.17;
-        vec3 s1=rotY(p-vec3(.92*sin(t+1.1),.48*cos(t*.8),.04),t*.8);
-        vec3 s2=rotX(p-vec3(-.82*cos(t*.8),-.62*sin(t+1.4),-.12),-t*.6);
-        float shard1=sdOcta(s1,.16);
-        float shard2=sdOcta(s2,.105);
-        vec3 s3=rotY(p-vec3(.68*cos(t*.7),-.76*sin(t*.5),.2),t);
-        float shard3=sdOcta(s3,.075);
-        return min(d,min(shard1,min(shard2,shard3)));
-      }
-      vec3 normalAt(vec3 p){
-        float e=.0025;
-        return normalize(vec3(scene(p+vec3(e,0.,0.))-scene(p-vec3(e,0.,0.)),
-                              scene(p+vec3(0.,e,0.))-scene(p-vec3(0.,e,0.)),
-                              scene(p+vec3(0.,0.,e))-scene(p-vec3(0.,0.,e))));
+      float height(vec2 p){
+        float t = uTime * .04;
+        vec2 q = vec2(fbm(p + vec2(0., t)), fbm(p + vec2(5.2, 1.3) - t));
+        vec2 r = vec2(fbm(p + 2.4 * q + vec2(1.7, 9.2) + t * 1.3), fbm(p + 2.4 * q + vec2(8.3, 2.8) - t));
+        return fbm(p + 2.2 * r);
       }
       void main(){
-        vec2 uv=gl_FragCoord.xy/uRes;
-        float aspect=uRes.x/uRes.y;
-        vec2 screen=(uv-.5)*vec2(aspect,1.);
-        screen.x-=aspect*.19;
-        screen+=uMouse*.035;
-        vec3 ro=vec3(screen*1.55,3.25);
-        vec3 rd=normalize(vec3(screen*.52,-1.8));
-        float travel=0.,hit=0.;
-        vec3 pos=ro;
-        for(int i=0;i<44;i++){
-          pos=ro+rd*travel;
-          float d=scene(pos);
-          if(d<.0025){hit=1.;break;}
-          travel+=max(d*.72,.012);
-          if(travel>6.4)break;
-        }
-        vec3 bg=mix(vec3(.010,.016,.013),vec3(.026,.037,.029),smoothstep(.04,1.2,uv.x));
-        float haze=exp(-length((uv-vec2(.72,.51))*vec2(1.1,1.05))*3.0);
-        bg+=vec3(.014,.042,.018)*haze;
-        vec3 col=bg;
-        if(hit>.5){
-          vec3 n=normalAt(pos),v=normalize(ro-pos);
-          vec3 l1=normalize(vec3(-.65,.8,1.));
-          vec3 l2=normalize(vec3(.8,-.3,.7));
-          float diff=max(dot(n,l1),0.);
-          float spec=pow(max(dot(reflect(-l1,n),v),0.),48.);
-          float broad=pow(max(dot(reflect(-l2,n),v),0.),14.);
-          float fres=pow(1.-max(dot(n,v),0.),3.);
-          float grain=fbm(pos*vec3(9.,13.,11.)+vec3(0.,uTime*.07,0.));
-          float striation=.5+.5*sin(pos.y*17.+pos.x*9.+fbm(pos*5.)*8.+uTime*.28);
-          vec3 chrome=mix(vec3(.035,.046,.04),vec3(.78,.83,.78),smoothstep(.12,.86,grain*.55+striation*.45));
-          col=chrome*(.2+.48*diff)+vec3(.91,.97,.91)*spec*.9+vec3(.32,.42,.34)*broad*.5;
-          col+=vec3(.20,.95,.12)*pow(fres,2.)*(.08+.15*striation);
-          float seam=pow(max(0.,1.-abs(striation-.78)*17.),5.);
-          col+=vec3(.25,.98,.12)*seam*.10;
-          col=mix(col,vec3(.68,.82,.72),fres*.17);
-          col+=vec3(.07,.35,.075)*pow(1.-max(dot(n,v),0.),5.)*.2;
-        }
-        float sweep=exp(-pow((uv.x-(.55+.14*sin(uTime*.15)))*25.,2.))*exp(-pow((uv.y-.5)*1.6,2.));
-        col+=vec3(.06,.17,.045)*sweep*(.12+.2*haze);
-        col+=(hash(vec3(gl_FragCoord.xy,uTime*.13))-.5)/450.;
-        gl_FragColor=vec4(col,1.);
+        vec2 uv = gl_FragCoord.xy / uRes;
+        float asp = uRes.x / uRes.y;
+        vec2 p = (uv - .5) * vec2(asp, 1.) * 1.8 + uMouse * .05;
+        p.x += .4;
+
+        float e = .012;
+        float h0 = height(p);
+        float hx = height(p + vec2(e, 0.));
+        float hy = height(p + vec2(0., e));
+        vec3 n = normalize(vec3((h0 - hx) / e * .5, (h0 - hy) / e * .5, 1.));
+
+        vec3 V = vec3(0., 0., 1.);
+        vec3 L = normalize(vec3(-.5, .7, .6));
+        float diff = dot(n, L) * .5 + .5;
+        float spec = pow(max(dot(reflect(-L, n), V), 0.), 22.);
+        float rim  = pow(1. - max(n.z, 0.), 2.);
+        float band = .5 + .5 * sin(h0 * 13. + n.x * 3.);
+        float l = .16 + .44 * diff * diff + .55 * spec + .24 * rim * band;
+        l = pow(l, 1.12);
+
+        vec3 c0 = vec3(.020, .027, .035);   // #101511
+        vec3 c1 = vec3(.086, .122, .141);   // #1B201C
+        vec3 c2 = vec3(.110, .161, .188);   // #212523
+        vec3 c3 = vec3(.545, .584, .612);   // #8B959C
+        vec3 c4 = vec3(.820, .859, .886);   // #38F820
+        vec3 c5 = vec3(.941, .957, .973);   // #FFFFFF
+        vec3 col = mix(c0, c1, smoothstep(0., .3, l));
+        col = mix(col, c2, smoothstep(.2, .45, l));
+        col = mix(col, c3, smoothstep(.45, .8, l));
+        col = mix(col, c4, smoothstep(.75, 1., l));
+        col = mix(col, c5, smoothstep(.95, 1.25, l));
+
+        // composition: material lives on the right, text side stays quiet
+        col *= mix(.3, 1., smoothstep(.05, .8, uv.x));
+        col *= mix(.55, 1., smoothstep(1.25, .25, length((uv - vec2(.72, .5)) * vec2(1., 1.15))));
+        col += (hash(gl_FragCoord.xy + fract(uTime)) - .5) / 255.;
+        gl_FragColor = vec4(col, 1.);
       }`;
 
     function compile(type, src) {
