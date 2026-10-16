@@ -1227,7 +1227,7 @@
     <article class="card">
       <div class="card-top">
         <div class="mono-badge token-logo">${t.image || esc((t.ticker||t.name||"?").slice(0,2).toUpperCase())}</div>
-        <div class="token-card-name"><h3>${esc(t.name)}</h3><div class="ticker">$ ${esc(t.ticker)} <span class="token-network">· SOLANA</span></div></div>
+        <div class="token-card-name"><h3>${esc(t.name)}</h3><div class="ticker">${esc(t.ticker)} <span class="token-network">· SOLANA</span></div></div>
         ${t.newOnMintlane ? '<span class="token-new">NEW</span>' : ''}
       </div>
       <div class="token-price-row"><div><span>Token price</span><strong data-price-id="${esc(t.id)}">${esc(t.price)}</strong></div><span class="token-change flat" data-change-id="${esc(t.id)}">24H —</span></div>
