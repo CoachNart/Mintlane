@@ -1129,60 +1129,88 @@
       precision highp float;
       uniform vec2 uRes; uniform float uTime; uniform vec2 uMouse;
 
-      float hash(vec2 p){ p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
-      float noise(vec2 p){
-        vec2 i = floor(p), f = fract(p); f = f * f * (3. - 2. * f);
-        return mix(mix(hash(i), hash(i + vec2(1., 0.)), f.x), mix(hash(i + vec2(0., 1.)), hash(i + vec2(1., 1.)), f.x), f.y);
+      float hash(vec3 p){ p=fract(p*.3183099+.1); p*=17.; return fract(p.x*p.y*p.z*(p.x+p.y+p.z)); }
+      float noise(vec3 p){
+        vec3 i=floor(p), f=fract(p); f=f*f*(3.-2.*f);
+        return mix(mix(mix(hash(i),hash(i+vec3(1,0,0)),f.x),mix(hash(i+vec3(0,1,0)),hash(i+vec3(1,1,0)),f.x),f.y),
+                   mix(mix(hash(i+vec3(0,0,1)),hash(i+vec3(1,0,1)),f.x),mix(hash(i+vec3(0,1,1)),hash(i+vec3(1,1,1)),f.x),f.y),f.z);
       }
-      float fbm(vec2 p){
-        float v = 0., a = .5; mat2 m = mat2(1.6, 1.2, -1.2, 1.6);
-        for (int i = 0; i < 4; i++){ v += a * noise(p); p = m * p; a *= .5; }
+      float fbm(vec3 p){
+        float v=0., a=.5;
+        for(int i=0;i<4;i++){ v+=a*noise(p); p=p*2.03+vec3(7.1,3.7,5.3); a*=.5; }
         return v;
       }
-      float height(vec2 p){
-        float t = uTime * .04;
-        vec2 q = vec2(fbm(p + vec2(0., t)), fbm(p + vec2(5.2, 1.3) - t));
-        vec2 r = vec2(fbm(p + 2.4 * q + vec2(1.7, 9.2) + t * 1.3), fbm(p + 2.4 * q + vec2(8.3, 2.8) - t));
-        return fbm(p + 2.2 * r);
+      vec3 rotateY(vec3 p,float a){ float c=cos(a),s=sin(a); return vec3(c*p.x+s*p.z,p.y,-s*p.x+c*p.z); }
+      float matter(vec3 p){
+        float t=uTime*.18;
+        vec3 q=rotateY(p,t);
+        float n=fbm(q*2.15+vec3(0.,t*.35,0.));
+        float wave=sin(q.x*3.3+sin(q.y*4.1+t)*.8+t)*.035;
+        float r=length(q);
+        return r-(.78+.18*(n-.5)+wave);
+      }
+      float scene(vec3 p){
+        float d=matter(p);
+        float t=uTime*.15;
+        vec3 f1=p-vec3(.98*sin(t+1.1),.58*cos(t*.8),.12);
+        f1=rotateY(f1,t*.7);
+        float d1=length(f1)-.115;
+        vec3 f2=p-vec3(-.9*cos(t*.8),-.55*sin(t+1.4),-.1);
+        f2=rotateY(f2,-t*.6);
+        float d2=length(f2)-.075;
+        return min(d,min(d1,d2));
+      }
+      vec3 normalAt(vec3 p){
+        vec2 e=vec2(.002,0.);
+        return normalize(vec3(scene(p+e.xyy)-scene(p-e.xyy),scene(p+e.yxy)-scene(p-e.yxy),scene(p+e.yyx)-scene(p-e.yyx)));
       }
       void main(){
-        vec2 uv = gl_FragCoord.xy / uRes;
-        float asp = uRes.x / uRes.y;
-        vec2 p = (uv - .5) * vec2(asp, 1.) * 1.8 + uMouse * .05;
-        p.x += .4;
-
-        float e = .012;
-        float h0 = height(p);
-        float hx = height(p + vec2(e, 0.));
-        float hy = height(p + vec2(0., e));
-        vec3 n = normalize(vec3((h0 - hx) / e * .5, (h0 - hy) / e * .5, 1.));
-
-        vec3 V = vec3(0., 0., 1.);
-        vec3 L = normalize(vec3(-.5, .7, .6));
-        float diff = dot(n, L) * .5 + .5;
-        float spec = pow(max(dot(reflect(-L, n), V), 0.), 22.);
-        float rim  = pow(1. - max(n.z, 0.), 2.);
-        float band = .5 + .5 * sin(h0 * 13. + n.x * 3.);
-        float l = .16 + .44 * diff * diff + .55 * spec + .24 * rim * band;
-        l = pow(l, 1.12);
-
-        vec3 c0 = vec3(.020, .027, .035);   // #101511
-        vec3 c1 = vec3(.086, .122, .141);   // #1B201C
-        vec3 c2 = vec3(.110, .161, .188);   // #212523
-        vec3 c3 = vec3(.545, .584, .612);   // #8B959C
-        vec3 c4 = vec3(.820, .859, .886);   // #38F820
-        vec3 c5 = vec3(.941, .957, .973);   // #FFFFFF
-        vec3 col = mix(c0, c1, smoothstep(0., .3, l));
-        col = mix(col, c2, smoothstep(.2, .45, l));
-        col = mix(col, c3, smoothstep(.45, .8, l));
-        col = mix(col, c4, smoothstep(.75, 1., l));
-        col = mix(col, c5, smoothstep(.95, 1.25, l));
-
-        // composition: material lives on the right, text side stays quiet
-        col *= mix(.3, 1., smoothstep(.05, .8, uv.x));
-        col *= mix(.55, 1., smoothstep(1.25, .25, length((uv - vec2(.72, .5)) * vec2(1., 1.15))));
-        col += (hash(gl_FragCoord.xy + fract(uTime)) - .5) / 255.;
-        gl_FragColor = vec4(col, 1.);
+        vec2 uv=gl_FragCoord.xy/uRes;
+        float aspect=uRes.x/uRes.y;
+        vec2 screen=(uv-.5)*vec2(aspect,1.);
+        // Keep the sculptural object on the right; the copy has a quiet dark field.
+        screen.x+=(aspect*.5-.70*aspect)*1.0;
+        screen+=uMouse*.045;
+        vec3 ro=vec3(screen*1.65,3.15);
+        vec3 rd=normalize(vec3(screen*.55,-1.75));
+        float travel=0., hit=0.;
+        vec3 pos=ro;
+        for(int i=0;i<38;i++){
+          pos=ro+rd*travel;
+          float d=scene(pos);
+          if(d<.0025){ hit=1.; break; }
+          travel+=max(d*.72,.012);
+          if(travel>6.5)break;
+        }
+        vec3 bg=mix(vec3(.012,.018,.015),vec3(.025,.036,.029),smoothstep(.1,1.25,uv.x));
+        float haze=exp(-length((uv-vec2(.73,.51))*vec2(1.2,1.1))*3.2);
+        bg+=vec3(.015,.045,.021)*haze;
+        vec3 col=bg;
+        if(hit>.5){
+          vec3 n=normalAt(pos);
+          vec3 v=normalize(ro-pos);
+          vec3 l1=normalize(vec3(-.55,.78,1.1));
+          vec3 l2=normalize(vec3(.8,-.25,.7));
+          float diff=max(dot(n,l1),0.);
+          float spec=pow(max(dot(reflect(-l1,n),v),0.),42.);
+          float broad=pow(max(dot(reflect(-l2,n),v),0.),12.);
+          float fres=pow(1.-max(dot(n,v),0.),3.);
+          float grain=fbm(pos*vec3(8.,12.,10.)+vec3(0.,uTime*.09,0.));
+          float striation=.5+.5*sin(pos.y*13.+pos.x*8.+fbm(pos*5.)*7.+uTime*.22);
+          vec3 chrome=mix(vec3(.055,.068,.06),vec3(.77,.82,.78),smoothstep(.16,.84,grain*.65+striation*.35));
+          col=chrome*(.18+.42*diff)+vec3(.9,.97,.91)*spec*.95+vec3(.28,.4,.32)*broad*.55;
+          col+=vec3(.18,.95,.12)*pow(fres,2.)*(.09+.17*striation);
+          float seam=pow(max(0.,1.-abs(striation-.76)*18.),5.);
+          col+=vec3(.18,.95,.10)*seam*.11;
+          col=mix(col,vec3(.68,.82,.72),fres*.18);
+          float rim=pow(1.-max(dot(n,v),0.),5.);
+          col+=vec3(.08,.42,.08)*rim*.22;
+        }
+        // A faint moving light sweep gives the material a sense of continuous transformation.
+        float sweep=exp(-pow((uv.x-(.52+.16*sin(uTime*.16)))*24.,2.))*exp(-pow((uv.y-.5)*1.5,2.));
+        col+=vec3(.07,.18,.055)*sweep*(.15+.25*haze);
+        col+=(hash(vec3(gl_FragCoord.xy,uTime*.15))-.5)/420.;
+        gl_FragColor=vec4(col,1.);
       }`;
 
     function compile(type, src) {
