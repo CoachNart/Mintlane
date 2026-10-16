@@ -1003,7 +1003,7 @@
       </div>
       <div class="filters" role="group" aria-label="Filter tokens">
         <button class="chip" type="button" data-filter="all" aria-pressed="true">All</button>
-        <button class="chip" type="button" data-filter="new" aria-pressed="false">New launches</button>
+        <button class="chip" type="button" data-filter="new" aria-pressed="false">AI &amp; DePIN</button>
         <button class="chip" type="button" data-filter="recent" aria-pressed="false">Recently added</button>
       </div>
     </div>
@@ -1310,7 +1310,7 @@
   function render() {
     const term = q.value.trim().toLowerCase();
     let list = [...TOKENS];
-    if (filter === "new") list = list.filter(t => t.newOnMintlane);
+    if (filter === "new") list = list.filter(t => ["AI compute","DePIN mapping","Decentralized storage"].includes(t.status));
     if (filter === "recent") list.sort((a,b) => new Date(b.createdAt||0)-new Date(a.createdAt||0));
     if (term) list = list.filter(t => (t.name+" "+t.ticker+" "+t.status).toLowerCase().includes(term));
     results.innerHTML = tokenRows(list);
