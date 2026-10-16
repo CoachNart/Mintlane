@@ -238,6 +238,18 @@
   .step h3 { margin: 13px 0 0; font-size: clamp(17px, 1.7vw, 20px); font-weight: 600; z-index: 1; }
   .step p { max-width: 220px; margin: 9px 0 0; color: var(--muted); font-size: clamp(11px, 1.1vw, 13px); line-height: 1.65; z-index: 1; }
 
+  /* Click-to-read launch steps: text clears, then resolves word by word. */
+  .step{cursor:pointer;-webkit-tap-highlight-color:transparent}
+  .step:focus-visible{outline:2px solid #38F820;outline-offset:6px}
+  .step h3,.step p{position:relative}
+  .step p{min-height:4.9em}
+  .step .step-word{display:inline-block;opacity:0;transform:translateY(7px);filter:blur(3px);transition:opacity .22s ease,transform .22s ease,filter .22s ease;will-change:opacity,transform}
+  .step .step-word.is-read{opacity:1;transform:translateY(0);filter:blur(0)}
+  .step .step-word-space{white-space:pre}
+  .step.is-reading h3 .step-word{color:#f5fff3}
+  .step.is-reading{border-color:rgba(56,248,32,.72);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 24px 56px rgba(0,0,0,.32),0 0 24px rgba(56,248,32,.08)}
+  @media(prefers-reduced-motion:reduce){.step .step-word{transition:none;filter:none;transform:none}.step .step-word.is-read{opacity:1}}
+
   /* ---------- Creators ---------- */
   .split { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(32px, 6vw, 88px); align-items: center; }
   .split .copy p { margin-top: 20px; color: var(--muted); font-size: 16.5px; max-width: 460px; }
@@ -903,7 +915,6 @@
     </div>
   </div>
   <div class="price-ticker" role="region" aria-label="Solana token prices">
-    <div class="ticker-label"><span class="ticker-live-dot"></span><span>MARKET WATCH</span><b>LIVE PRICES</b></div>
     <div class="ticker-viewport"><div class="ticker-track" id="priceTicker"><span class="ticker-loading">Loading Solana market prices…</span></div></div>
   </div>
 </section>
@@ -1529,6 +1540,68 @@
       }, { threshold: .45 }).observe(pv);
     }
   } catch (err) { root.classList.remove("mo", "dr"); console.warn("Motion disabled:", err); }
+})();
+</script>
+
+<script>
+/* Tap a launch-step circle to replay its copy as a word-by-word readout. */
+(function(){
+  const steps=[...document.querySelectorAll(".step-grid .step")];
+  if(!steps.length)return;
+  let activeTimer=null, activeStep=null, runId=0;
+  const originals=new Map();
+  steps.forEach((step,index)=>{
+    step.setAttribute("role","button");
+    step.setAttribute("tabindex","0");
+    step.setAttribute("aria-label", "Read step "+(index+1)+": "+step.querySelector("h3").textContent+". "+step.querySelector("p").textContent);
+    originals.set(step,[step.querySelector("h3"),step.querySelector("p")].map(el=>({el,text:el.textContent})));
+    step.addEventListener("click",()=>play(step));
+    step.addEventListener("keydown",e=>{
+      if(e.target!==step)return;
+      if(e.key==="Enter"||e.key===" "){e.preventDefault();play(step);}
+    });
+  });
+  function restore(step){
+    if(!step)return;
+    (originals.get(step)||[]).forEach(({el,text})=>{el.textContent=text;});
+    step.classList.remove("is-reading");
+    step.removeAttribute("aria-busy");
+  }
+  function play(step){
+    runId++;
+    const thisRun=runId;
+    if(activeTimer)clearTimeout(activeTimer);
+    if(activeStep)restore(activeStep);
+    activeStep=step;
+    step.classList.add("is-reading");
+    step.setAttribute("aria-busy","true");
+    const pieces=(originals.get(step)||[]).map(({el,text})=>{
+      el.textContent="";
+      const words=text.trim().split(/\s+/);
+      words.forEach((word,i)=>{
+        const span=document.createElement("span");
+        span.className="step-word";
+        span.textContent=word;
+        el.appendChild(span);
+        if(i<words.length-1){const space=document.createElement("span");space.className="step-word-space";space.textContent=" ";el.appendChild(space);}
+      });
+      return [...el.querySelectorAll(".step-word")];
+    });
+    let line=0,word=0;
+    const next=()=>{
+      if(thisRun!==runId)return;
+      while(line<pieces.length&&word>=pieces[line].length){line++;word=0;}
+      if(line>=pieces.length){
+        step.removeAttribute("aria-busy");
+        step.classList.remove("is-reading");
+        return;
+      }
+      pieces[line][word].classList.add("is-read");
+      word++;
+      activeTimer=setTimeout(next,115);
+    };
+    activeTimer=setTimeout(next,160);
+  }
 })();
 </script>
 </body>
