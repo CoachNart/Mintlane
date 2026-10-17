@@ -828,6 +828,93 @@
   .ca.copied .ca-tag { background: rgba(0,229,160,.16) !important; }
   .ca.copied .ca-val, .ca.copied .ca-ic { color: var(--accent) !important; }
 
+
+  /* Market directory: calm, legible rows with no pale slabs or competing hues. */
+  .token-directory-bar { color:var(--muted) !important; }
+  .token-directory-bar span:first-child { color:var(--accent-soft) !important; }
+  .token-table-wrap {
+    background:#0A1311 !important;
+    border:1px solid rgba(168,230,210,.14) !important;
+    border-radius:16px !important;
+    box-shadow:0 20px 52px rgba(0,0,0,.2) !important;
+    overflow:hidden;
+  }
+  .token-table { background:transparent !important; }
+  .token-table thead { background:#0E1A17 !important; }
+  .token-table th {
+    background:#0E1A17 !important;
+    color:#8AA39B !important;
+    border-bottom:1px solid rgba(168,230,210,.12) !important;
+    padding-top:16px !important; padding-bottom:16px !important;
+  }
+  .token-table td {
+    background:transparent !important;
+    color:#D5E7E0 !important;
+    border-bottom:1px solid rgba(168,230,210,.075) !important;
+    padding-top:14px !important; padding-bottom:14px !important;
+  }
+  .token-table tbody tr { background:transparent !important; transition:background .18s ease !important; }
+  .token-table tbody tr:hover { background:rgba(0,229,160,.035) !important; }
+  .table-logo {
+    border:1px solid rgba(168,230,210,.16) !important;
+    border-radius:11px !important;
+    box-shadow:none !important;
+    background:#142622 !important;
+  }
+  .table-token-copy strong { color:#F0FFFA !important; font-weight:600 !important; }
+  .table-token-copy small { color:#A8E6D2 !important; }
+  .table-token-copy small i { color:#71877F !important; }
+  .table-price { color:#F0FFFA !important; }
+  .token-table .token-change { color:#8AA39B !important; background:rgba(168,230,210,.055) !important; }
+  .table-category {
+    background:rgba(168,230,210,.045) !important;
+    border-color:rgba(168,230,210,.12) !important;
+    color:#B5C9C1 !important;
+  }
+  .table-market-link { color:#A8E6D2 !important; font-weight:500 !important; }
+  .table-market-link:hover { color:#00E5A0 !important; }
+  @media(max-width:680px) {
+    .token-table-wrap { border-radius:12px !important; }
+    .token-table th { padding:12px 13px !important; }
+    .token-table td { padding:12px 13px !important; }
+  }
+
+  /* Mintlane mark: one mint gradient, clean geometry, no rainbow metallic stops. */
+  #metal stop:nth-child(1) { stop-color:#A8E6D2 !important; }
+  #metal stop:nth-child(2) { stop-color:#00E5A0 !important; }
+  #metal stop:nth-child(3) { stop-color:#00E5A0 !important; }
+  #metal stop:nth-child(4) { stop-color:#A8E6D2 !important; }
+  #metal2 stop:first-child { stop-color:#A8E6D2 !important; }
+  #metal2 stop:last-child { stop-color:#00E5A0 !important; }
+  .nav-brand svg, footer .brand svg {
+    filter:drop-shadow(0 0 12px rgba(0,229,160,.12)) !important;
+  }
+  #mark path { stroke:#031510 !important; }
+
+  /* Reduce the hero's competing motion and bright diagonal flare. */
+  .hero-media::after { display:none !important; }
+  .hero-media canvas { opacity:.42 !important; }
+  .hero-grid::before {
+    background:radial-gradient(ellipse at 76% 45%,rgba(0,229,160,.07),transparent 52%) !important;
+  }
+  .hero h1 { animation:heroTextIn .75s cubic-bezier(.2,.7,.2,1) both !important; }
+  .hero h1 .ch {
+    animation:none !important;
+    opacity:1 !important;
+    transform:none !important;
+    filter:none !important;
+  }
+  .hero .eyebrow { animation:heroTextIn .6s ease both !important; animation-delay:.04s !important; }
+  .hero p.lead { animation:heroTextIn .65s ease both !important; animation-delay:.12s !important; }
+  .hero-cta { animation:heroTextIn .65s ease both !important; animation-delay:.18s !important; }
+  @keyframes heroTextIn {
+    from { opacity:0; transform:translateY(10px); }
+    to { opacity:1; transform:translateY(0); }
+  }
+  @media(prefers-reduced-motion:reduce) {
+    .hero h1,.hero .eyebrow,.hero p.lead,.hero-cta { animation:none !important; }
+  }
+
 </style>
 
 \n</head>
