@@ -783,6 +783,51 @@
 
 /* Shared Mintlane surface treatment — one dark base and one mint accent. */
 .nav-shell{background:rgba(14,26,23,.84);border-color:var(--border);box-shadow:0 10px 32px rgba(3,7,6,.28)}
+
+  /* Final Mintlane visual pass: keep the hero and glass header on one dark/mint system. */
+  .site-header { isolation: isolate; }
+  .nav-shell {
+    background: rgba(6,11,10,.82) !important;
+    border-color: rgba(168,230,210,.16) !important;
+    box-shadow: 0 12px 34px rgba(0,0,0,.28), inset 0 1px 0 rgba(240,255,250,.035);
+  }
+  .nav-link { color: var(--text) !important; font-weight: 500; }
+  .nav-link:hover, .nav-link:focus-visible { color: var(--accent) !important; }
+  .nav-x { color: var(--text); background: rgba(14,26,23,.72); border-color: var(--border); }
+  .nav-launch { color: var(--bg) !important; }
+  .hero {
+    background:
+      radial-gradient(48% 52% at 78% 45%, rgba(0,229,160,.15), transparent 72%),
+      linear-gradient(180deg, #060B0A 0%, #060B0A 100%) !important;
+  }
+  .hero::before {
+    background:
+      linear-gradient(90deg, rgba(6,11,10,.96) 0%, rgba(6,11,10,.84) 38%, rgba(6,11,10,.28) 72%, rgba(6,11,10,.42) 100%),
+      linear-gradient(180deg, rgba(3,7,6,.68) 0%, transparent 22%, transparent 68%, #060B0A 100%) !important;
+  }
+  .hero p.lead { color: var(--muted) !important; }
+  .hero h1 .l2 { -webkit-text-stroke-color: rgba(240,255,250,.72); }
+  .launch {
+    color: #031510 !important;
+    background: linear-gradient(115deg, #00E5A0 0%, #A8E6D2 100%) !important;
+    border-color: rgba(168,230,210,.32) !important;
+    box-shadow: 0 10px 28px -14px rgba(0,229,160,.42) !important;
+  }
+  .launch .li { background: rgba(3,7,6,.88) !important; color: var(--text) !important; }
+  .launch:hover .li { background: #030706 !important; color: var(--accent-soft) !important; }
+  .ca {
+    background: rgba(14,26,23,.72) !important;
+    border-color: var(--border-strong) !important;
+    color: var(--text) !important;
+    box-shadow: inset 0 1px 0 rgba(240,255,250,.025);
+  }
+  .ca-tag { background: rgba(0,229,160,.12) !important; color: var(--accent-soft) !important; }
+  .ca-val { color: var(--text) !important; }
+  .ca-ic { color: var(--muted) !important; }
+  .ca:hover { border-color: rgba(0,229,160,.5) !important; box-shadow: 0 0 0 3px rgba(0,229,160,.06) !important; }
+  .ca.copied .ca-tag { background: rgba(0,229,160,.16) !important; }
+  .ca.copied .ca-val, .ca.copied .ca-ic { color: var(--accent) !important; }
+
 </style>
 
 \n</head>
