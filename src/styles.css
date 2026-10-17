@@ -312,3 +312,131 @@ button:not(:disabled):hover,.btn:hover,.button:hover,[role=button]:hover,input[t
 :where(.card,.panel,.surface,.content-card,.launch-preview,.dashboard-card){border-color:rgba(86,89,108,.16)}
 :where(h1,h2,h3,h4,h5,h6){color:#060B0A}
 :where(.muted,.secondary-text,.subtitle,.caption){color:#8AA39B}
+
+
+
+/* Final application palette pass — overrides legacy theme experiments without changing layout. */
+:root {
+  color-scheme: dark;
+  --bg:#060B0A; --panel:#0E1A17; --panel2:#142622;
+  --line:rgba(168,230,210,.14); --muted:#8AA39B; --muted2:#A8E6D2;
+  --text:#F0FFFA; --text-main:#F0FFFA; --brand:#00E5A0;
+  --brand-hover:#A8E6D2; --cyan:#A8E6D2; --green:#00E5A0;
+  --red:#FF7777; --gold:#A8E6D2; --bg-primary:#060B0A;
+  --bg-vignette:#030706; --bg-surface:#0E1A17;
+  --ambient-glow:#142622; --accent-silver:#A8E6D2;
+  --metallic-highlight:#A8E6D2;
+}
+html, body, #root { background:#060B0A !important; color:#F0FFFA !important; }
+body {
+  background-image:
+    radial-gradient(ellipse at 82% 0%, rgba(0,229,160,.075), transparent 34%),
+    radial-gradient(ellipse at 0% 82%, rgba(20,38,34,.32), transparent 38%) !important;
+}
+.sidebar { background:#030706 !important; border-color:rgba(168,230,210,.14) !important; }
+.topbar { background:rgba(3,7,6,.91) !important; border-color:rgba(168,230,210,.12) !important; }
+.app-footer { border-color:rgba(168,230,210,.12) !important; }
+.breadcrumbs { color:#8AA39B !important; }
+.breadcrumbs strong, .top-network { color:#A8E6D2 !important; }
+.crumb-slash, .footer-separator { color:rgba(168,230,210,.25) !important; }
+.brand-name, .sidebar-footer strong, .network-pill strong,
+.section-heading h2, .list-heading h2, .stat-value,
+.featured-card>strong, .help-card strong { color:#F0FFFA !important; }
+.brand-mark, .token-avatar.brand, .preview-token-mark {
+  background:linear-gradient(145deg,#00E5A0,#A8E6D2) !important;
+  color:#031510 !important; box-shadow:0 5px 18px rgba(0,229,160,.12) !important;
+}
+.network-pill, .help-card, .search-field, .period-chip, .filter-tabs,
+.token-table-wrap, .settings-panel, .settings-nav, .activity-card,
+.data-warning, .protocol-callout, .connected-panel, .fixed-supply,
+.claim-message, .market-status-card {
+  background:#0A1311 !important;
+  border-color:rgba(168,230,210,.14) !important;
+  color:#F0FFFA !important;
+}
+.stat-card, .featured-card, .list-card, .form-card, .local-launch-list,
+.launch-side, .settings-panel, .activity-card, .launch-success,
+.fixed-supply, .connected-panel {
+  background:linear-gradient(145deg,#0E1A17,#0A1311) !important;
+  border:1px solid rgba(168,230,210,.13) !important;
+  box-shadow:0 10px 28px rgba(0,0,0,.12) !important;
+  color:#F0FFFA !important;
+}
+.welcome-row h1, .page-heading-row h1, .hero-copy h2, .earnings-hero h2,
+.launch-success h3, :where(h1,h2,h3,h4,h5,h6) { color:#F0FFFA !important; }
+.welcome-row h1 span, .page-heading-row h1 span,
+.hero-copy h2 em, .earnings-hero h2 em { color:#00E5A0 !important; }
+.page-subtitle, .hero-copy p, .earnings-hero p, .stat-caption,
+.featured-ticker, .featured-metrics small, .progress-label,
+.network-pill small, .sidebar-footer small, .help-card p,
+.market-foot, .bottom-note, .breadcrumbs { color:#8AA39B !important; }
+.hero-banner {
+  border-color:rgba(168,230,210,.16) !important;
+  background:
+    radial-gradient(ellipse at 78% 42%,rgba(0,229,160,.12),transparent 43%),
+    linear-gradient(112deg,#0E1A17 0%,#0A1311 100%) !important;
+  color:#F0FFFA !important;
+}
+.hero-banner::before { display:none !important; }
+.hero-grid {
+  background-image:
+    linear-gradient(rgba(168,230,210,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(168,230,210,.035) 1px,transparent 1px) !important;
+  mask-image:linear-gradient(90deg,transparent,#A8E6D2 40%,#A8E6D2) !important;
+}
+.hero-copy { max-width:52%; }
+.hero-tag, .eyebrow, .text-link, .bottom-note svg { color:#00E5A0 !important; }
+.launch-preview {
+  background:linear-gradient(145deg,rgba(14,26,23,.97),rgba(6,11,10,.98)) !important;
+  border-color:rgba(168,230,210,.2) !important;
+  box-shadow:0 18px 48px rgba(0,0,0,.3) !important;
+  color:#F0FFFA !important;
+}
+.preview-token-name b, .preview-value>div b { color:#F0FFFA !important; }
+.preview-token-name span, .preview-value>div span, .chart-labels,
+.preview-footer { color:#8AA39B !important; }
+.preview-live, .preview-live i, .preview-footer b,
+.preview-ticker { color:#A8E6D2 !important; }
+.preview-ticker { border-color:rgba(168,230,210,.18) !important; }
+.launch-preview-top, .preview-footer, .featured-metrics,
+.local-launch-row { border-color:rgba(168,230,210,.13) !important; }
+.chart-line { stroke:#00E5A0 !important; }
+.chart-area { fill:rgba(0,229,160,.12) !important; }
+.button-primary, .launch-cta, .wallet-connect, .wallet-adapter-button.wallet-connect,
+.wallet-actions .wallet-connect, .wallet-actions .wallet-adapter-button,
+.wallet-actions .wallet-adapter-button-trigger {
+  background:linear-gradient(120deg,#00E5A0,#A8E6D2) !important;
+  border-color:rgba(0,229,160,.5) !important; color:#031510 !important;
+  box-shadow:0 6px 20px rgba(0,229,160,.10) !important;
+}
+.button-light { background:rgba(0,229,160,.12) !important; color:#A8E6D2 !important; border:1px solid rgba(0,229,160,.3) !important; }
+.button-secondary, .button-ghost, .search-field, .filter-tabs {
+  background:#0A1311 !important; border-color:rgba(168,230,210,.16) !important; color:#A8E6D2 !important;
+}
+.button-ghost:hover, .button-secondary:hover, .search-field:focus-within,
+.featured-card:hover { border-color:rgba(0,229,160,.45) !important; }
+.nav-item { color:#8AA39B !important; }
+.nav-item:hover { background:rgba(168,230,210,.05) !important; color:#F0FFFA !important; }
+.nav-item.active { background:rgba(0,229,160,.09) !important; border-color:rgba(0,229,160,.16) !important; color:#A8E6D2 !important; }
+.nav-item.active svg, .help-icon, .help-card button, .brand-beta, .network-orb { color:#00E5A0 !important; }
+.network-orb, .help-icon { background:rgba(0,229,160,.08) !important; border-color:rgba(0,229,160,.16) !important; }
+.network-status, .preview-live i, .market-live-dot, .footer-dot { background:#00E5A0 !important; }
+.period-chip, .search-field, .filter-tabs button, .token-table th { color:#8AA39B !important; }
+.filter-tabs button.selected { background:rgba(0,229,160,.10) !important; color:#A8E6D2 !important; }
+.token-table th { background:#0E1A17 !important; }
+.token-table td { border-color:rgba(168,230,210,.09) !important; color:#F0FFFA !important; }
+.token-table tbody tr:hover { background:rgba(168,230,210,.035) !important; }
+.token-table .mono { color:#D5E7E0 !important; }
+.ca-copy-button, .wallet-actions .ca-copy-button { border-color:rgba(168,230,210,.16) !important; background:#0A1311 !important; color:#A8E6D2 !important; }
+.ca-copy-button:hover, .wallet-actions .ca-copy-button:hover { border-color:#00E5A0 !important; }
+.launch-success { border-color:rgba(0,229,160,.24) !important; background:linear-gradient(145deg,#0E1A17,#0A1311) !important; }
+.launch-success h3 { color:#F0FFFA !important; }
+.launch-success>p { color:#8AA39B !important; }
+.startup-screen { background:#060B0A !important; color:#F0FFFA !important; }
+.startup-spinner { border-color:rgba(168,230,210,.15) !important; border-top-color:#00E5A0 !important; }
+.startup-status-mark { border-color:rgba(0,229,160,.24) !important; background:rgba(0,229,160,.08) !important; color:#A8E6D2 !important; }
+@media(max-width:760px) {
+  .hero-copy { max-width:100%; }
+  .topbar { padding-left:14px !important; padding-right:14px !important; }
+  .page-content { padding-left:16px !important; padding-right:16px !important; }
+}
