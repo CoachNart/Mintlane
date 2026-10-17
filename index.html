@@ -917,7 +917,12 @@
 
 </style>
 
-\n</head>
+\n  <style id="landing-top-gap-fix">
+    /* Keep the glass header flush with the top edge; avoid a blank strip above the landing page. */
+    .site-header { top: 0 !important; margin-top: 0 !important; }
+    @media (max-width: 760px) { .site-header { top: 0 !important; margin-top: 0 !important; } }
+  </style>
+</head>
 <body>
 <div id="entry-loader" role="status" aria-label="Loading Mintlane"><div class="loader-core"><div class="loader-orbit" aria-hidden="true"><span></span></div><div class="loader-caption">Preparing your launchpad</div><div class="loader-track" aria-hidden="true"><div class="loader-progress"></div></div></div></div>
 <script>
