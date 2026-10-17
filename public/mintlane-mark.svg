@@ -1,1 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#C6FF3D"/><stop offset=".4" stop-color="#00E5A0"/><stop offset=".75" stop-color="#00C2FF"/><stop offset="1" stop-color="#FF9A5C"/></linearGradient></defs><rect width="64" height="64" rx="18" fill="url(#g)"/><path d="M14 46V18h7l11 14 11-14h7v28h-8V30L32 42 22 30v16z" fill="#060B0A"/><circle cx="49" cy="15" r="4" fill="#F0FFFA"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
+  <defs>
+    <linearGradient id="mintlane-mark" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#A8E6D2"/>
+      <stop offset=".55" stop-color="#00E5A0"/>
+      <stop offset="1" stop-color="#087D5D"/>
+    </linearGradient>
+  </defs>
+  <polygon points="20,2 36,11 36,29 20,38 4,29 4,11" fill="url(#mintlane-mark)"/>
+  <path d="M12.5 27V14l7.5 8 7.5-8v13" fill="none" stroke="#F0FFFA" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+</svg>
