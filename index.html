@@ -624,23 +624,6 @@
     background: linear-gradient(90deg, rgba(168,230,210,.91) 0%, rgba(168,230,210,.72) 34%, rgba(168,230,210,.18) 70%, rgba(168,230,210,.28) 100%),
       linear-gradient(180deg, rgba(168,230,210,.42) 0%, transparent 22%, transparent 70%, var(--surface) 100%);
   }
-  .hero-media::after {
-    content: "";
-    position: absolute;
-    left: -10%;
-    top: -4%;
-    width: 130%;
-    height: 34px;
-    border-radius: 999px;
-    background: var(--bg);
-    transform: rotate(11deg);
-    transform-origin: 0 0;
-    box-shadow: 0 0 6px 2px var(--bg), 0 0 18px 6px var(--accent-soft),
-      0 0 40px 14px var(--accent-soft), 0 0 90px 36px rgba(168,230,210,.55),
-      0 0 180px 80px rgba(240,255,250,.45);
-    opacity: .82;
-    pointer-events: none;
-  }
   h1 { color: var(--text); text-shadow: 0 0 24px rgba(6,11,10,.22); }
   h1 .l2 { -webkit-text-stroke-color: var(--text); }
   .glass {
@@ -682,15 +665,6 @@
   }
   .btn-ghost:hover, .link:hover, .nav-link:hover, summary:hover { color: var(--accent-soft); }
   ::selection { background: rgba(168,230,210,.32); color: var(--text); }
-  @media (max-width: 700px) {
-    .hero-media::after {
-      top: 0;
-      height: 16px;
-      opacity: .58;
-      box-shadow: 0 0 5px 2px var(--bg), 0 0 14px 5px var(--accent-soft),
-        0 0 28px 10px rgba(168,230,210,.72), 0 0 70px 28px rgba(240,255,250,.4);
-    }
-  }
 
 
   /* ---------- Asymmetric floating market tape ---------- */
@@ -893,7 +867,9 @@
 
   /* Reduce the hero's competing motion and bright diagonal flare. */
   .hero-media::after { display:none !important; }
-  .hero-media canvas { opacity:.42 !important; }
+  .hero-media { background:#0c0d0d !important; }
+  .hero-media canvas { opacity:0 !important; transition:opacity .6s ease !important; }
+  .hero-media canvas.ready { opacity:1 !important; }
   .hero-grid::before {
     background:radial-gradient(ellipse at 76% 45%,rgba(0,229,160,.07),transparent 52%) !important;
   }
@@ -922,6 +898,14 @@
     .site-header { top: 0 !important; margin-top: 0 !important; }
     @media (max-width: 760px) { .site-header { top: 0 !important; margin-top: 0 !important; } }
   </style>
+
+<script src="/hero-animation.js" defer></script>
+<style id="hero-animation-cleanup">
+  .hero-media::after { display:none !important; }
+  .hero-media { background:#0c0d0d !important; }
+  .hero-media canvas { opacity:0 !important; transition:opacity .6s ease !important; }
+  .hero-media canvas.ready { opacity:1 !important; }
+</style>
 </head>
 <body>
 <div id="entry-loader" role="status" aria-label="Loading Mintlane"><div class="loader-core"><div class="loader-orbit" aria-hidden="true"><span></span></div><div class="loader-caption">Preparing your launchpad</div><div class="loader-track" aria-hidden="true"><div class="loader-progress"></div></div></div></div>
@@ -990,7 +974,7 @@
 <!-- ================= HERO ================= -->
 <section class="hero">
   <div class="hero-media" aria-hidden="true">
-    <canvas id="heroCanvas"></canvas>
+    <canvas id="hero-canvas"></canvas>
   </div>
   <div class="wrap hero-grid">
     <div>
@@ -1279,126 +1263,7 @@
   document.querySelectorAll("[data-x-placeholder]").forEach(a => a.addEventListener("click", e => e.preventDefault()));
   document.getElementById("yr").textContent = new Date().getFullYear();
 
-  /* ====== Hero: liquid-metal shader ====== */
-  (function () {
-    const canvas = document.getElementById("heroCanvas");
-    const hero = canvas.closest(".hero");
-    const gl = canvas.getContext("webgl", { antialias: false, alpha: false, powerPreference: "low-power" });
-    if (!gl) return; // falls back to the static gradient behind it
-
-    const vert = "attribute vec2 p; void main(){ gl_Position = vec4(p, 0., 1.); }";
-    const frag = `
-      precision highp float;
-      uniform vec2 uRes; uniform float uTime; uniform vec2 uMouse;
-
-      float hash(vec2 p){ p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
-      float noise(vec2 p){
-        vec2 i = floor(p), f = fract(p); f = f * f * (3. - 2. * f);
-        return mix(mix(hash(i), hash(i + vec2(1., 0.)), f.x), mix(hash(i + vec2(0., 1.)), hash(i + vec2(1., 1.)), f.x), f.y);
-      }
-      float fbm(vec2 p){
-        float v = 0., a = .5; mat2 m = mat2(1.6, 1.2, -1.2, 1.6);
-        for (int i = 0; i < 4; i++){ v += a * noise(p); p = m * p; a *= .5; }
-        return v;
-      }
-      float height(vec2 p){
-        float t = uTime * .04;
-        vec2 q = vec2(fbm(p + vec2(0., t)), fbm(p + vec2(5.2, 1.3) - t));
-        vec2 r = vec2(fbm(p + 2.4 * q + vec2(1.7, 9.2) + t * 1.3), fbm(p + 2.4 * q + vec2(8.3, 2.8) - t));
-        return fbm(p + 2.2 * r);
-      }
-      void main(){
-        vec2 uv = gl_FragCoord.xy / uRes;
-        float asp = uRes.x / uRes.y;
-        vec2 p = (uv - .5) * vec2(asp, 1.) * 1.8 + uMouse * .05;
-        p.x += .4;
-
-        float e = .012;
-        float h0 = height(p);
-        float hx = height(p + vec2(e, 0.));
-        float hy = height(p + vec2(0., e));
-        vec3 n = normalize(vec3((h0 - hx) / e * .5, (h0 - hy) / e * .5, 1.));
-
-        vec3 V = vec3(0., 0., 1.);
-        vec3 L = normalize(vec3(-.5, .7, .6));
-        float diff = dot(n, L) * .5 + .5;
-        float spec = pow(max(dot(reflect(-L, n), V), 0.), 22.);
-        float rim  = pow(1. - max(n.z, 0.), 2.);
-        float band = .5 + .5 * sin(h0 * 13. + n.x * 3.);
-        float l = .16 + .44 * diff * diff + .55 * spec + .24 * rim * band;
-        l = pow(l, 1.12);
-
-        vec3 c0 = vec3(1.000, 1.000, 1.000);   // #56596C
-        vec3 c1 = vec3(.953, .961, .965);   // #FFFFFF
-        vec3 c2 = vec3(.851, .894, .906);   // #FFFFFF
-        vec3 c3 = vec3(.690, .784, .808);   // #56596C
-        vec3 c4 = vec3(.933, .820, .686);   // #335DF2
-        vec3 c5 = vec3(.765, .847, .871);   // #0B0D28
-        vec3 col = mix(c0, c1, smoothstep(0., .3, l));
-        col = mix(col, c2, smoothstep(.2, .45, l));
-        col = mix(col, c3, smoothstep(.45, .8, l));
-        col = mix(col, c4, smoothstep(.75, 1., l));
-        col = mix(col, c5, smoothstep(.95, 1.25, l));
-
-        // composition: material lives on the right, text side stays quiet
-        col *= mix(.3, 1., smoothstep(.05, .8, uv.x));
-        col *= mix(.55, 1., smoothstep(1.25, .25, length((uv - vec2(.72, .5)) * vec2(1., 1.15))));
-        col += (hash(gl_FragCoord.xy + fract(uTime)) - .5) / 255.;
-        gl_FragColor = vec4(col, 1.);
-      }`;
-
-    function compile(type, src) {
-      const sh = gl.createShader(type); gl.shaderSource(sh, src); gl.compileShader(sh);
-      if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) { console.warn(gl.getShaderInfoLog(sh)); return null; }
-      return sh;
-    }
-    const vs = compile(gl.VERTEX_SHADER, vert), fs = compile(gl.FRAGMENT_SHADER, frag);
-    if (!vs || !fs) return;
-    const prog = gl.createProgram();
-    gl.attachShader(prog, vs); gl.attachShader(prog, fs); gl.linkProgram(prog);
-    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return;
-    gl.useProgram(prog);
-
-    const buf = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
-    const loc = gl.getAttribLocation(prog, "p");
-    gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
-    const uRes = gl.getUniformLocation(prog, "uRes"), uTime = gl.getUniformLocation(prog, "uTime"), uMouse = gl.getUniformLocation(prog, "uMouse");
-
-    function resize() {
-      const scale = (innerWidth < 700 ? .45 : .6) * Math.min(devicePixelRatio || 1, 1.5);
-      canvas.width = Math.max(2, Math.round(canvas.clientWidth * scale));
-      canvas.height = Math.max(2, Math.round(canvas.clientHeight * scale));
-      gl.viewport(0, 0, canvas.width, canvas.height);
-      gl.uniform2f(uRes, canvas.width, canvas.height);
-    }
-    addEventListener("resize", resize); resize();
-
-    const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let mx = 0, my = 0, tx = 0, ty = 0;
-    hero.addEventListener("pointermove", e => {
-      const r = hero.getBoundingClientRect();
-      tx = (e.clientX - r.left) / r.width - .5; ty = .5 - (e.clientY - r.top) / r.height;
-    });
-
-    let visible = true, raf = 0, last = 0, t0 = performance.now(), shown = false;
-    function draw(now) {
-      raf = 0;
-      if (!still && visible && !document.hidden) raf = requestAnimationFrame(draw);
-      if (!still && now - last < 33) return;   // ~30fps keeps it light
-      last = now;
-      mx += (tx - mx) * .04; my += (ty - my) * .04;
-      gl.uniform1f(uTime, still ? 14 : (now - t0) / 1000 + 14);
-      gl.uniform2f(uMouse, mx, my);
-      gl.drawArrays(gl.TRIANGLES, 0, 3);
-      if (!shown) { shown = true; canvas.classList.add("ready"); }
-    }
-    const kick = () => { if (!raf) raf = requestAnimationFrame(draw); };
-    new IntersectionObserver(([en]) => { visible = en.isIntersecting; if (visible) kick(); }).observe(hero);
-    document.addEventListener("visibilitychange", () => { if (!document.hidden) kick(); });
-    kick();
-  })();
+  /* Hero background is rendered by the dedicated /hero-animation.js module. */
 
   /* ====== Toast ====== */
   const toast = document.getElementById("toast"); let tt;
